@@ -1,7 +1,7 @@
-// Persistance locale (localStorage) : XP, streak, historique de réponses, maîtrise.
+// Persistance locale (localStorage) : XP, streak, historique de réponses, maîtrise, répétition espacée.
 // Pas de backend, pas de compte : tout vit dans le navigateur.
 
-import { POSITION_GROUPS } from './hands'
+import { ALL_HERO_GROUPS, SPOTS } from './hands'
 
 const STORAGE_KEY = 'suited_state_v1'
 const MASTERY_WINDOW = 50
@@ -24,6 +24,8 @@ function defaultState() {
     xp: 0,
     streak: { count: 0, lastPlayedDate: null, playedDates: [] },
     history: [],
+    srs: {},
+    totalAnswered: 0,
   }
 }
 
@@ -53,12 +55,38 @@ export function addXp(amount) {
   return state.xp
 }
 
-/** Enregistre une réponse de drill dans l'historique (utilisé pour la maîtrise). */
-export function recordAnswer({ group, seat, notation, correctAction, userAction, correct }) {
+// --- Répétition espacée (par main × position × spot) ------------------------------
+
+export const SRS_INTERVALS = [3, 10, 30]
+
+/**
+ * Calcule le nouvel état de répétition espacée pour une main, à partir de son état précédent.
+ * Fonction pure (aucun accès à localStorage) pour rester facilement testable :
+ * - un échec relance toujours au premier palier (revoir dans 3 mains) ;
+ * - une réussite fait avancer au palier suivant (3 -> 10 -> 30) ;
+ * - 3 réussites consécutives depuis le dernier échec = main "maîtrisée" : on arrête de la suivre
+ *   spécialement (retour null = pas d'entrée à conserver, elle rejoint le tirage normal) ;
+ * - une main jamais ratée n'est jamais suivie (retourne null si correct et pas d'état existant).
+ */
+export function scheduleSrsUpdate(existingItem, correct, totalAnswered) {
+  if (!correct) {
+    return { intervalIndex: 0, streak: 0, dueAt: totalAnswered + SRS_INTERVALS[0] }
+  }
+  if (!existingItem) return null
+  const streak = existingItem.streak + 1
+  if (streak >= 3) return null
+  const intervalIndex = Math.min(existingItem.intervalIndex + 1, SRS_INTERVALS.length - 1)
+  return { intervalIndex, streak, dueAt: totalAnswered + SRS_INTERVALS[intervalIndex] }
+}
+
+/** Enregistre une réponse de drill : historique, compteur global, et mise à jour de la répétition espacée. */
+export function recordAnswer({ spot, group, contextKey, seat, notation, correctAction, userAction, correct }) {
   const state = loadState()
   state.history.push({
     ts: Date.now(),
+    spot,
     group,
+    contextKey,
     seat,
     notation,
     correctAction,
@@ -68,6 +96,13 @@ export function recordAnswer({ group, seat, notation, correctAction, userAction,
   if (state.history.length > MAX_HISTORY) {
     state.history = state.history.slice(-MAX_HISTORY)
   }
+  state.totalAnswered += 1
+
+  const key = `${spot}|${group}|${contextKey}|${notation}`
+  const updated = scheduleSrsUpdate(state.srs[key], correct, state.totalAnswered)
+  if (updated) state.srs[key] = updated
+  else delete state.srs[key]
+
   saveState(state)
 }
 
@@ -97,9 +132,30 @@ export function getMasteryByPosition(history, group) {
   return accuracy(entries)
 }
 
+/** Maîtrise par position (EP/MP/CO/BTN/SB + BB dès qu'il y a de la défense de blind jouée). */
 export function getAllMastery(history) {
   const result = {}
-  for (const group of POSITION_GROUPS) result[group] = getMasteryByPosition(history, group)
+  for (const group of ALL_HERO_GROUPS) result[group] = getMasteryByPosition(history, group)
+  return result
+}
+
+/** Maîtrise pour un filtre de position de Séries : "Blinds" regroupe SB (open) et BB (défense). */
+export function getMasteryForPositionFilter(history, filterGroup) {
+  if (filterGroup === 'Blinds') {
+    const entries = history.filter((e) => e.group === 'SB' || e.group === 'BB').slice(-MASTERY_WINDOW)
+    return accuracy(entries)
+  }
+  return getMasteryByPosition(history, filterGroup)
+}
+
+export function getMasteryBySpot(history, spot) {
+  const entries = history.filter((e) => e.spot === spot).slice(-MASTERY_WINDOW)
+  return accuracy(entries)
+}
+
+export function getAllMasteryBySpot(history) {
+  const result = {}
+  for (const spot of SPOTS) result[spot] = getMasteryBySpot(history, spot)
   return result
 }
 

@@ -1,6 +1,7 @@
 import { Icon } from '../components/Icons'
 import MasteryRing from '../components/MasteryRing'
 import { loadState, getOverallMastery, getAllMastery, getPokerIQ } from '../lib/storage'
+import { ALL_HERO_GROUPS } from '../lib/hands'
 
 export default function Home({ onPlay, onNavigate }) {
   const state = loadState()
@@ -8,7 +9,7 @@ export default function Home({ onPlay, onNavigate }) {
   const byPosition = getAllMastery(state.history)
   const iq = getPokerIQ(state.history)
 
-  const weakest = POSITION_LABELS_ORDER.map((g) => ({ g, v: byPosition[g] }))
+  const weakest = ALL_HERO_GROUPS.map((g) => ({ g, v: byPosition[g] }))
     .filter((p) => p.v != null && p.v < 75)
     .sort((a, b) => a.v - b.v)[0]
 
@@ -68,5 +69,3 @@ export default function Home({ onPlay, onNavigate }) {
     </div>
   )
 }
-
-const POSITION_LABELS_ORDER = ['EP', 'MP', 'CO', 'BTN', 'SB']

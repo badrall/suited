@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "nom": "Le Jargon",
+    "version": "0.1-draft",
+    "usage": "5e onglet de l'app + source des tooltips : chaque terme apparaissant dans une explication devient tappable (définition en popup).",
+    "note": "Définitions volontairement en une phrase, langage courant."
+  },
+  "categories": [
+    {
+      "id": "bases",
+      "nom": "Les bases",
+      "termes": {
+        "Équité": "Tes chances de gagner le pot si toutes les cartes étaient retournées maintenant.",
+        "Range": "L'ensemble des mains possibles d'un joueur dans une situation donnée — on ne joue pas contre une main, mais contre une range.",
+        "Blinds": "Les deux mises obligatoires (petite et grosse) qui forcent l'action à démarrer.",
+        "bb": "La grosse blind comme unité de mesure : un stack de 100bb = 100 fois la grosse blind.",
+        "Stack (tapis)": "L'ensemble de tes jetons sur la table.",
+        "Pot": "Le total des jetons misés, que le vainqueur remporte.",
+        "Kicker": "Ta carte d'accompagnement : elle départage deux joueurs qui ont la même paire.",
+        "Cote du pot": "Le prix que le pot t'offre : si payer 5 peut t'en rapporter 20, tu as 4 contre 1.",
+        "Cotes implicites": "Les jetons futurs que tu peux gagner si tu touches ta main — au-delà de ce qu'il y a déjà dans le pot.",
+        "Outs": "Les cartes du paquet qui améliorent ta main.",
+        "Abattage (showdown)": "Le moment où les joueurs restants montrent leurs cartes.",
+        "Fold equity": "La part du profit qui vient du fait que l'adversaire peut se coucher face à ta mise.",
+        "EV": "L'espérance de gain : ce qu'une décision rapporte en moyenne si tu la répètes des milliers de fois.",
+        "Variance": "Les montagnes russes du court terme : on peut bien jouer et perdre, mal jouer et gagner.",
+        "Bankroll": "L'argent total que tu consacres au poker — à ne jamais confondre avec ton stack du jour."
+      }
+    },
+    {
+      "id": "actions",
+      "nom": "Les actions",
+      "termes": {
+        "Fold": "Se coucher : abandonner sa main et le pot.",
+        "Check": "Parler sans miser quand personne n'a misé avant toi.",
+        "Call": "Payer : égaliser la mise en cours.",
+        "Bet": "Miser en premier sur une street.",
+        "Raise": "Relancer : augmenter la mise en cours.",
+        "Limp": "Payer juste la grosse blind sans relancer préflop — le pire des deux mondes : tu investis sans initiative.",
+        "Open (open-raise)": "La première relance préflop, quand personne n'est encore entré dans le coup.",
+        "3-bet": "Re-relancer face à un open (la relance est la 2e mise, le 3-bet la 3e).",
+        "4-bet": "Re-relancer face à un 3-bet — le pot devient généralement énorme.",
+        "Squeeze": "3-better après un open ET un call : tu presses deux adversaires à la fois.",
+        "Push (shove)": "Miser tout son tapis : all-in.",
+        "Check-raise": "Checker puis relancer la mise adverse sur la même street — un piège classique.",
+        "C-bet": "Continuation bet : miser au flop quand c'est toi qui avais relancé préflop.",
+        "Vol (steal)": "Relancer depuis les positions tardives d'abord pour prendre les blinds.",
+        "Isolation": "Relancer sur un limper pour se retrouver seul contre lui."
+      }
+    },
+    {
+      "id": "positions",
+      "nom": "Les positions",
+      "termes": {
+        "Position": "Parler après l'adversaire : tu vois ce qu'il fait avant de décider — l'avantage le plus sous-estimé du poker.",
+        "UTG": "Under the gun : premier à parler préflop, la pire position — d'où une range très serrée.",
+        "EP": "Early position : les 3 premiers sièges après les blinds (UTG, UTG+1, UTG+2).",
+        "MP": "Middle position : les sièges intermédiaires (lojack, hijack).",
+        "HJ": "Hijack : deux sièges avant le bouton.",
+        "CO": "Cutoff : juste avant le bouton — assez tard pour ouvrir large.",
+        "BTN": "Le bouton : dernier à parler postflop sur toutes les streets. La meilleure position, donc la range la plus large.",
+        "SB": "Small blind : tu as déjà payé une demi-blind, mais tu joueras toute la main hors position.",
+        "BB": "Big blind : tu as déjà payé une blind entière — tu défends donc plus large face à un open.",
+        "IP": "In position : tu parles après l'adversaire.",
+        "OOP": "Out of position : tu parles avant lui — tout devient plus dur."
+      }
+    },
+    {
+      "id": "mains",
+      "nom": "Les mains & le board",
+      "termes": {
+        "Suité (s)": "Deux cartes de la même couleur : A9s = As et 9 assortis. Vaut ~2-3 pts d'équité et beaucoup de jouabilité.",
+        "Off-suit (o)": "Deux cartes de couleurs différentes : A9o.",
+        "Connecteur": "Deux cartes qui se suivent (98, 76) : elles fabriquent des quintes.",
+        "Broadway": "Les grosses cartes T, J, Q, K, A — et la quinte max qui va avec.",
+        "Paire servie": "Une paire reçue directement préflop (88 en main).",
+        "Brelan (set)": "Trois cartes identiques ; le set — paire en main + la 3e au board — est presque invisible pour l'adversaire.",
+        "Tirage (draw)": "Une main incomplète qui a besoin d'une carte de plus (tirage couleur, tirage quinte).",
+        "Roue": "La quinte A-2-3-4-5 : la raison pour laquelle A5s vaut mieux que A6s.",
+        "Blocker": "Une carte en ta possession qui réduit les combinaisons adverses : avec un As, l'adversaire a moins souvent AA.",
+        "Main frontière": "Notre terme : une main juste à la limite entre raise et fold — c'est là que se joue ta progression.",
+        "Nuts": "La meilleure main possible à un instant donné.",
+        "Board": "Les cartes communes au centre de la table.",
+        "Flop / Turn / River": "Les 3 streets postflop : 3 cartes, puis 1, puis 1.",
+        "Multiway": "Un pot à 3 joueurs ou plus : les mains moyennes y perdent beaucoup de valeur.",
+        "Heads-up": "Un pot (ou une table) à deux joueurs seulement."
+      }
+    },
+    {
+      "id": "metajeu",
+      "nom": "Le méta-jeu & les profils",
+      "termes": {
+        "GTO": "Game Theory Optimal : la stratégie mathématiquement inexploitable, la référence dont on part avant d'ajuster.",
+        "Exploitant": "S'écarter volontairement du GTO pour punir les erreurs spécifiques des adversaires — le cœur du live.",
+        "Leak": "Une fuite : une erreur récurrente dans ton jeu qui te coûte de l'argent sans que tu le voies.",
+        "Tilt": "Jouer sous le coup de l'émotion après un mauvais coup — le leak le plus cher du poker.",
+        "Value bet": "Miser avec la meilleure main pour être payé par une moins bonne.",
+        "Bluff": "Miser avec une main faible pour faire coucher une meilleure.",
+        "Semi-bluff": "Miser avec un tirage : tu peux gagner tout de suite (fold) ou en touchant ta carte.",
+        "Fish": "Joueur faible et payeur — la source principale de profit d'une table live.",
+        "Reg": "Régulier : joueur habitué et solide.",
+        "Nit": "Joueur ultra-serré qui n'entre qu'avec des monstres — facile à voler, dangereux quand il relance.",
+        "Calling station": "Joueur qui paie tout : on ne le bluffe JAMAIS, on value bet sans arrêt.",
+        "TAG / LAG": "Tight-agressif (serré et agressif, le style conseillé) / Loose-agressif (large et agressif, dur à jouer).",
+        "VPIP": "Le % de mains qu'un joueur joue volontairement : 8% en EP, 40% au BTN dans nos ranges."
+      }
+    },
+    {
+      "id": "tournois",
+      "nom": "Tournois & live",
+      "termes": {
+        "MTT": "Multi-table tournament : tournoi à plusieurs tables, on paie une fois, on joue jusqu'à l'élimination.",
+        "Buy-in": "Le prix d'entrée d'un tournoi ou le montant apporté à une table de cash.",
+        "ITM": "In the money : atteindre les places payées d'un tournoi.",
+        "Bulle": "La dernière place NON payée — le moment le plus tendu d'un tournoi.",
+        "ICM": "Le modèle qui convertit tes jetons de tournoi en valeur réelle en euros : près de la bulle, survivre vaut plus que gagner des jetons.",
+        "Ante": "Petite mise obligatoire de tous les joueurs, en plus des blinds — fréquent en tournoi.",
+        "Straddle": "En cash live : mise volontaire de 2bb à l'aveugle avant la distribution — ça double les enjeux du coup.",
+        "Cash game": "Partie d'argent : les jetons valent leur montant réel, on entre et sort quand on veut.",
+        "Freeroll": "Tournoi gratuit à gains réels."
+      }
+    }
+  ]
+}

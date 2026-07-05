@@ -3,15 +3,17 @@ import ProgressBar, { masteryColor } from '../components/ProgressBar'
 import {
   loadState,
   getAllMastery,
+  getAllMasteryBySpot,
   getPokerIQ,
   getTopMissedHands,
   getMonthCalendar,
 } from '../lib/storage'
-import { POSITION_GROUPS } from '../lib/hands'
+import { ALL_HERO_GROUPS, SPOTS, SPOT_LABELS } from '../lib/hands'
 
 export default function Progress() {
   const state = loadState()
   const mastery = getAllMastery(state.history)
+  const masteryBySpot = getAllMasteryBySpot(state.history)
   const iq = getPokerIQ(state.history)
   const missed = getTopMissedHands(state.history, 5)
   const { days, monthLabel } = getMonthCalendar(state.streak.playedDates)
@@ -43,11 +45,22 @@ export default function Progress() {
 
       <h5>Maîtrise par position</h5>
       <div className="card" style={{ marginBottom: 14 }}>
-        {POSITION_GROUPS.map((group) => (
+        {ALL_HERO_GROUPS.map((group) => (
           <div className="pos" key={group}>
             <span>{group}</span>
             <ProgressBar percent={mastery[group] ?? 0} color={masteryColor(mastery[group])} />
             <b>{mastery[group] == null ? '—' : `${mastery[group]}%`}</b>
+          </div>
+        ))}
+      </div>
+
+      <h5>Maîtrise par situation</h5>
+      <div className="card" style={{ marginBottom: 14 }}>
+        {SPOTS.map((spot) => (
+          <div className="pos" key={spot}>
+            <span style={{ width: 90 }}>{SPOT_LABELS[spot]}</span>
+            <ProgressBar percent={masteryBySpot[spot] ?? 0} color={masteryColor(masteryBySpot[spot])} />
+            <b>{masteryBySpot[spot] == null ? '—' : `${masteryBySpot[spot]}%`}</b>
           </div>
         ))}
       </div>

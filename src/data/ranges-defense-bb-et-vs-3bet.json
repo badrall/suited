@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "game": "NLHE cash live 9-max 100bb",
+    "spots": ["bb_defense (BB face à un open ~3.5-4bb)", "vs_3bet (après notre open, face à un 3-bet)"],
+    "version": "0.1-draft",
+    "notes": [
+      "BB defense live plus tight qu'online : les opens live sont gros (4bb) donc la cote est moins bonne, et on joue OOP toute la main.",
+      "vs 3-bet : les 3-bets live sont presque toujours forts → discipline de fold élevée. Le concept clé à enseigner : 'un 3-bet live = du vrai'.",
+      "A5s apparaît en 3-bet 'léger' dès que l'open vient de CO/BTN/SB : premier pas pédagogique vers les 3-bets bluff.",
+      "Action par défaut : fold."
+    ]
+  },
+  "bb_defense": {
+    "vs_EP": {
+      "3bet": ["QQ", "KK", "AA", "AKs", "AKo"],
+      "call": ["22", "33", "44", "55", "66", "77", "88", "99", "TT", "JJ", "AQs", "AJs", "ATs", "KQs", "KJs", "QJs", "JTs", "T9s", "98s", "87s", "AQo"],
+      "frontier_3bet": ["QQ", "AKo"],
+      "frontier_call": ["JJ", "ATs", "KJs", "87s", "AQo"],
+      "frontier_fold": ["A9s", "KTs", "QTs", "76s", "AJo", "KQo"]
+    },
+    "vs_MP": {
+      "3bet": ["QQ", "KK", "AA", "AQs", "AKs", "AKo"],
+      "call": ["22", "33", "44", "55", "66", "77", "88", "99", "TT", "JJ", "AJs", "ATs", "A9s", "A5s", "KQs", "KJs", "KTs", "QJs", "QTs", "JTs", "T9s", "98s", "87s", "76s", "AQo", "AJo", "KQo"],
+      "frontier_3bet": ["AQs"],
+      "frontier_call": ["A9s", "A5s", "KTs", "QTs", "76s", "AJo", "KQo"],
+      "frontier_fold": ["A8s", "K9s", "Q9s", "J9s", "65s", "ATo", "KJo"]
+    },
+    "vs_CO": {
+      "3bet": ["JJ", "QQ", "KK", "AA", "AQs", "AKs", "AKo", "A5s"],
+      "call": ["22", "33", "44", "55", "66", "77", "88", "99", "TT", "AJs", "ATs", "A9s", "A8s", "A7s", "A6s", "A4s", "A3s", "A2s", "KQs", "KJs", "KTs", "K9s", "QJs", "QTs", "Q9s", "JTs", "J9s", "T9s", "T8s", "98s", "97s", "87s", "76s", "65s", "AQo", "AJo", "ATo", "KQo", "KJo", "QJo", "JTo"],
+      "frontier_3bet": ["JJ", "AQs", "A5s"],
+      "frontier_call": ["K9s", "Q9s", "97s", "65s", "ATo", "KJo", "JTo"],
+      "frontier_fold": ["K8s", "Q8s", "J8s", "96s", "86s", "54s", "A9o", "KTo", "QTo", "J9o", "T9o"]
+    },
+    "vs_BTN": {
+      "3bet": ["TT", "JJ", "QQ", "KK", "AA", "AQs", "AKs", "AKo", "AQo", "A5s", "A4s"],
+      "call": ["22", "33", "44", "55", "66", "77", "88", "99", "AJs", "ATs", "A9s", "A8s", "A7s", "A6s", "A3s", "A2s", "KQs", "KJs", "KTs", "K9s", "K8s", "K7s", "QJs", "QTs", "Q9s", "Q8s", "JTs", "J9s", "J8s", "T9s", "T8s", "98s", "97s", "87s", "76s", "65s", "54s", "AJo", "ATo", "A9o", "KQo", "KJo", "KTo", "QJo", "QTo", "JTo", "T9o"],
+      "frontier_3bet": ["TT", "AQo", "A4s"],
+      "frontier_call": ["K7s", "Q8s", "J8s", "54s", "A9o", "KTo", "QTo", "T9o"],
+      "frontier_fold": ["K6s", "Q7s", "J7s", "96s", "75s", "A8o", "K9o", "Q9o", "J9o", "98o"]
+    },
+    "vs_SB": {
+      "3bet": ["99", "TT", "JJ", "QQ", "KK", "AA", "ATs", "AJs", "AQs", "AKs", "KQs", "A5s", "AQo", "AKo", "AJo"],
+      "call": ["22", "33", "44", "55", "66", "77", "88", "A9s", "A8s", "A7s", "A6s", "A4s", "A3s", "A2s", "KJs", "KTs", "K9s", "K8s", "QJs", "QTs", "Q9s", "JTs", "J9s", "T9s", "T8s", "98s", "97s", "87s", "76s", "65s", "ATo", "A9o", "A8o", "KQo", "KJo", "KTo", "QJo", "QTo", "JTo", "T9o"],
+      "frontier_3bet": ["99", "AJo", "KQs", "A5s"],
+      "frontier_call": ["K8s", "Q9s", "97s", "65s", "A8o", "KTo", "QTo", "T9o"],
+      "frontier_fold": ["K7s", "Q8s", "J8s", "86s", "54s", "A7o", "K9o", "Q9o", "J9o", "98o"]
+    }
+  },
+  "vs_3bet": {
+    "open_EP_MP": {
+      "contexte": "Notre open en EP/MP se fait 3-better. Les 3-bets face à un open early sont les plus forts du poker live.",
+      "4bet": ["KK", "AA"],
+      "call": ["TT", "JJ", "QQ", "AQs", "AKs", "AKo"],
+      "frontier_4bet": ["KK"],
+      "frontier_call": ["TT", "AQs"],
+      "frontier_fold": ["99", "AJs", "KQs", "AQo"]
+    },
+    "open_CO_BTN": {
+      "contexte": "Notre open tardif se fait 3-better (souvent par les blinds). Ranges un peu plus larges, mais le fold reste l'action majoritaire.",
+      "4bet": ["QQ", "KK", "AA", "AKs", "AKo"],
+      "call": ["77", "88", "99", "TT", "JJ", "ATs", "AJs", "AQs", "KQs", "QJs", "JTs", "AQo"],
+      "frontier_4bet": ["QQ", "AKo"],
+      "frontier_call": ["77", "ATs", "QJs", "JTs", "AQo"],
+      "frontier_fold": ["66", "A9s", "A5s", "KJs", "T9s", "AJo", "KQo"]
+    },
+    "open_SB": {
+      "contexte": "Notre open de SB se fait 3-better par la BB. On jouera hors position tout le coup : prudence maximale.",
+      "4bet": ["QQ", "KK", "AA", "AKs", "AKo"],
+      "call": ["88", "99", "TT", "JJ", "ATs", "AJs", "AQs", "KQs", "AQo"],
+      "frontier_4bet": ["QQ"],
+      "frontier_call": ["88", "ATs", "KQs", "AQo"],
+      "frontier_fold": ["77", "A9s", "KJs", "QJs", "AJo"]
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { IconSprite } from './components/Icons'
 import BottomNav from './components/BottomNav'
 import Home from './screens/Home'
+import Series from './screens/Series'
 import Placeholder from './screens/Placeholder'
 import Progress from './screens/Progress'
 import Session from './screens/Session'
@@ -9,34 +10,30 @@ import Session from './screens/Session'
 // L'app est une simple machine à onglets + un mode "session" plein écran pour le drill.
 export default function App() {
   const [tab, setTab] = useState('home')
-  const [inSession, setInSession] = useState(false)
+  const [sessionConfig, setSessionConfig] = useState(null) // null hors session, sinon { spot, group }
   const [refreshTick, setRefreshTick] = useState(0)
 
-  function startSession() {
-    setInSession(true)
+  function startSession(config) {
+    setSessionConfig(config)
   }
 
   function endSession() {
-    setInSession(false)
+    setSessionConfig(null)
     setTab('home')
-    setRefreshTick((t) => t + 1) // force Home/Progrès à relire le localStorage
+    setRefreshTick((t) => t + 1) // force Home/Progrès/Séries à relire le localStorage
   }
 
   return (
     <div className="app-shell">
       <IconSprite />
-      {inSession ? (
-        <Session onFinish={endSession} />
+      {sessionConfig ? (
+        <Session config={sessionConfig} onFinish={endSession} />
       ) : (
         <>
-          {tab === 'home' && <Home key={refreshTick} onPlay={startSession} onNavigate={setTab} />}
-          {tab === 'series' && (
-            <Placeholder
-              title="Séries"
-              text="Les parcours par position et par situation arrivent bientôt."
-              icon="target"
-            />
+          {tab === 'home' && (
+            <Home key={refreshTick} onPlay={() => startSession({ spot: null, group: null })} onNavigate={setTab} />
           )}
+          {tab === 'series' && <Series key={`s${refreshTick}`} onStart={startSession} />}
           {tab === 'charts' && (
             <Placeholder
               title="Charts"

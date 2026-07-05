@@ -1,10 +1,15 @@
 import PlayingCard from '../components/PlayingCard'
 import PokerTable from '../components/PokerTable'
 import ProgressBar from '../components/ProgressBar'
-import { seatPhrase } from '../lib/hands'
+import { seatPhrase, seatLabel, buttonsForSpot } from '../lib/hands'
 
-export default function Drill({ question, index, total, onAnswer, onQuit }) {
+// Sizings illustratifs par spot (pot au moment de la question), juste pour donner le contexte visuel.
+const POT_LABEL_BY_SPOT = { open: '1,5 bb', bb_defense: '5,5 bb', vs_3bet: '25 bb' }
+
+export default function Drill({ question, index, total, onAnswer, onQuit, rangesOpenData }) {
   const percent = (index / total) * 100
+  const buttons = buttonsForSpot(question.spot, question.contextKey, rangesOpenData)
+  const markedSeat = question.spot === 'bb_defense' ? question.openerSeat : question.spot === 'vs_3bet' ? question.villainSeat : null
 
   return (
     <div className="screen">
@@ -18,10 +23,24 @@ export default function Drill({ question, index, total, onAnswer, onQuit }) {
         </b>
       </div>
 
-      <PokerTable heroSeat={question.seat} potLabel="1,5 bb" />
+      <PokerTable heroSeat={question.seat} markedSeat={markedSeat} potLabel={POT_LABEL_BY_SPOT[question.spot]} />
 
       <div className="ctx">
-        Tu es <b>{seatPhrase(question.seat)}</b> · 100bb · foldé jusqu'à toi
+        {question.spot === 'open' && (
+          <>
+            Tu es <b>{seatPhrase(question.seat)}</b> · 100bb · foldé jusqu'à toi
+          </>
+        )}
+        {question.spot === 'bb_defense' && (
+          <>
+            <b>{seatLabel(question.openerSeat)}</b> ouvre · tu es en <b>BIG BLIND</b> · 100bb
+          </>
+        )}
+        {question.spot === 'vs_3bet' && (
+          <>
+            Tu as ouvert {seatPhrase(question.seat)} · <b>{seatLabel(question.villainSeat)}</b> te 3-bette · 100bb
+          </>
+        )}
       </div>
 
       <div className="hole">
@@ -31,15 +50,11 @@ export default function Drill({ question, index, total, onAnswer, onQuit }) {
       </div>
 
       <div className="answers">
-        <button type="button" className="btn r" onClick={() => onAnswer('fold')}>
-          FOLD
-        </button>
-        <button type="button" className="btn b" onClick={() => onAnswer('call')}>
-          CALL
-        </button>
-        <button type="button" className="btn g" onClick={() => onAnswer('raise')}>
-          RAISE
-        </button>
+        {buttons.map((b) => (
+          <button key={b.action} type="button" className={`btn ${b.cls}`} onClick={() => onAnswer(b.action)}>
+            {b.label}
+          </button>
+        ))}
       </div>
     </div>
   )

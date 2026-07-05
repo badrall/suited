@@ -1,6 +1,6 @@
 // Table 9-max vue de dessus, sièges positionnés sur une ellipse, siège du héros surligné.
 
-const SEATS_ORDER = ['UTG', 'UTG+1', 'UTG+2', 'LJ', 'HJ', 'CO', 'BTN', 'SB', 'BB']
+import { SEATS_ORDER } from '../lib/hands'
 
 function seatPosition(index, total) {
   // Départ en haut, sens horaire, ellipse un peu aplatie pour ressembler à une table ovale.
@@ -12,16 +12,21 @@ function seatPosition(index, total) {
   return { left: `${left}%`, top: `${top}%` }
 }
 
-export default function PokerTable({ heroSeat, potLabel }) {
+/**
+ * markedSeat : siège adverse à surligner en plus du héros (l'ouvreur en défense de BB,
+ * le 3-betteur face à un 3-bet). Reste sobre (anneau bleu) pour ne pas concurrencer le héros (or).
+ */
+export default function PokerTable({ heroSeat, markedSeat, potLabel }) {
   return (
     <div className="table">
       {SEATS_ORDER.map((seat, i) => {
         const isHero = seat === heroSeat
+        const isMarked = !isHero && seat === markedSeat
         const { left, top } = seatPosition(i, SEATS_ORDER.length)
         return (
           <div
             key={seat}
-            className={`seat${isHero ? ' me' : ''}`}
+            className={`seat${isHero ? ' me' : ''}${isMarked ? ' marked' : ''}`}
             style={{ left, top, transform: 'translate(-50%, -50%)' }}
           >
             {isHero ? 'MOI' : seat}

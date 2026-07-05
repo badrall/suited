@@ -1,7 +1,7 @@
 import { Icon } from '../components/Icons'
 import { getExplanation, seatPhrase } from '../lib/hands'
 
-export default function SessionEnd({ answers, bonusXp, explicationsData, onFinish }) {
+export default function SessionEnd({ answers, bonusXp, explicationsOpenData, explicationsSpotsData, onFinish }) {
   const total = answers.length
   const correctCount = answers.filter((a) => a.correct).length
   const accuracy = Math.round((correctCount / total) * 100)
@@ -49,7 +49,15 @@ export default function SessionEnd({ answers, bonusXp, explicationsData, onFinis
           <h5>Tes erreurs</h5>
           <div className="card" style={{ marginBottom: 14 }}>
             {mistakes.map((m, i) => {
-              const explanation = getExplanation(m.group, m.notation, explicationsData, m.correctAction)
+              const explanation = getExplanation(
+                m.spot,
+                m.group,
+                m.contextKey,
+                m.notation,
+                explicationsOpenData,
+                explicationsSpotsData,
+                m.correctAction,
+              )
               return (
                 <div className="miss-row" key={i}>
                   <div className="top">

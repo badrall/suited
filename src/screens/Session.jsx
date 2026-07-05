@@ -1,18 +1,30 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import Drill from './Drill'
 import Feedback from './Feedback'
 import SessionEnd from './SessionEnd'
-import rangesData from '../data/ranges-open-raise-9max-live.json'
-import explicationsData from '../data/explications-mains-frontieres.json'
+import rangesOpenData from '../data/ranges-open-raise-9max-live.json'
+import rangesDefenseData from '../data/ranges-defense-bb-et-vs-3bet.json'
+import explicationsOpenData from '../data/explications-mains-frontieres.json'
+import explicationsSpotsData from '../data/explications-spots-2-3.json'
 import equitesData from '../data/equites-preflop.json'
-import { generateSessionHands } from '../lib/hands'
-import { addXp, recordAnswer, markPlayedToday, xpForAnswer, XP_PERFECT_BONUS } from '../lib/storage'
+import { generateNextQuestion } from '../lib/hands'
+import { loadState, addXp, recordAnswer, markPlayedToday, xpForAnswer, XP_PERFECT_BONUS } from '../lib/storage'
 
 const SESSION_SIZE = 10
 
-/** Orchestre une session complète : 10 mains, feedback après chacune, récap final. */
-export default function Session({ onFinish }) {
-  const questions = useMemo(() => generateSessionHands(rangesData, equitesData, SESSION_SIZE), [])
+// Relit l'état frais (srs + totalAnswered) à chaque tirage, pour que la répétition espacée
+// tienne compte des réponses qui viennent d'être enregistrées (y compris d'une session précédente).
+function buildQuestion(config) {
+  const state = loadState()
+  return generateNextQuestion(config, state.srs, state.totalAnswered, rangesOpenData, rangesDefenseData)
+}
+
+/**
+ * Orchestre une session complète : 10 mains, feedback après chacune, récap final.
+ * config filtre les mains tirées (voir hands.eligibleContexts) : { spot, group } ou {} pour le mix.
+ */
+export default function Session({ config, onFinish }) {
+  const [questions, setQuestions] = useState(() => [buildQuestion(config)])
   const [index, setIndex] = useState(0)
   const [phase, setPhase] = useState('question') // 'question' | 'feedback' | 'end'
   const [answers, setAnswers] = useState([])
@@ -30,7 +42,9 @@ export default function Session({ onFinish }) {
     const xpGain = xpForAnswer(correct)
     addXp(xpGain)
     recordAnswer({
+      spot: question.spot,
       group: question.group,
+      contextKey: question.contextKey,
       seat: question.seat,
       notation: question.notation,
       correctAction: question.correctAction,
@@ -44,12 +58,13 @@ export default function Session({ onFinish }) {
   }
 
   function handleNext() {
-    if (index + 1 < questions.length) {
+    if (index + 1 < SESSION_SIZE) {
+      setQuestions((prev) => (prev[index + 1] ? prev : [...prev, buildQuestion(config)]))
       setIndex((i) => i + 1)
       setPhase('question')
       return
     }
-    const perfect = answers.length === questions.length && answers.every((a) => a.correct)
+    const perfect = answers.length === SESSION_SIZE && answers.every((a) => a.correct)
     if (perfect) {
       addXp(XP_PERFECT_BONUS)
       setBonusXp(XP_PERFECT_BONUS)
@@ -62,7 +77,8 @@ export default function Session({ onFinish }) {
       <SessionEnd
         answers={answers}
         bonusXp={bonusXp}
-        explicationsData={explicationsData}
+        explicationsOpenData={explicationsOpenData}
+        explicationsSpotsData={explicationsSpotsData}
         onFinish={onFinish}
       />
     )
@@ -74,15 +90,23 @@ export default function Session({ onFinish }) {
         question={question}
         lastAnswer={lastAnswer}
         index={index}
-        total={questions.length}
+        total={SESSION_SIZE}
         onNext={handleNext}
-        explicationsData={explicationsData}
+        explicationsOpenData={explicationsOpenData}
+        explicationsSpotsData={explicationsSpotsData}
         equitesData={equitesData}
       />
     )
   }
 
   return (
-    <Drill question={question} index={index} total={questions.length} onAnswer={handleAnswer} onQuit={onFinish} />
+    <Drill
+      question={question}
+      index={index}
+      total={SESSION_SIZE}
+      onAnswer={handleAnswer}
+      onQuit={onFinish}
+      rangesOpenData={rangesOpenData}
+    />
   )
 }
