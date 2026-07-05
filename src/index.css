@@ -95,8 +95,12 @@ button {
 }
 
 /* Écrans affichés avec le ruban bas (celui-ci est en position absolute, donc hors du flux) :
-   on réserve sa hauteur en padding-bottom pour que le contenu ne passe jamais dessous. */
-.screen.with-nav {
+   on réserve sa hauteur en padding-bottom pour que le contenu ne passe jamais dessous.
+   Le sélecteur :has réserve la place pour TOUS les écrans affichés avec le ruban,
+   même ceux qui n'ont pas la classe with-nav (Accueil, Progrès, placeholders).
+   En mode session (drill), il n'y a pas de .nav → pas de padding superflu. */
+.screen.with-nav,
+.app-shell:has(> .nav) .screen {
   padding-bottom: calc(var(--nav-height) + 14px);
 }
 
