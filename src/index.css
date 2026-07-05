@@ -45,12 +45,13 @@ button {
 /* ---------- Coquille de l'app (mobile-first, centrée sur desktop) ---------- */
 
 .app-shell {
+  --nav-height: 76px;
   width: 100%;
   max-width: 480px;
-  min-height: 100dvh;
+  height: 100dvh;
   background: var(--paper);
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 40px rgba(35, 35, 59, 0.08);
@@ -58,7 +59,7 @@ button {
 
 @media (min-width: 481px) {
   .app-shell {
-    min-height: 92dvh;
+    height: 92dvh;
     margin: 4dvh 0;
     border-radius: 28px;
   }
@@ -83,11 +84,20 @@ button {
 
 .screen {
   flex: 1;
+  min-height: 0; /* laisse overflow-y:auto scroller au lieu de faire grandir .app-shell */
   display: flex;
   flex-direction: column;
   padding: 18px 18px 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   position: relative;
   z-index: 1;
+}
+
+/* Écrans affichés avec le ruban bas (celui-ci est en position absolute, donc hors du flux) :
+   on réserve sa hauteur en padding-bottom pour que le contenu ne passe jamais dessous. */
+.screen.with-nav {
+  padding-bottom: calc(var(--nav-height) + 14px);
 }
 
 /* ---------- Icônes ---------- */
@@ -140,9 +150,10 @@ button {
   background: #fff;
   padding: 8px 6px calc(10px + env(safe-area-inset-bottom));
   z-index: 2;
-  position: sticky;
+  position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
-  flex-shrink: 0;
 }
 
 .nav button {

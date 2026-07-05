@@ -225,14 +225,18 @@ export function correctActionFor(spot, contextKey, notation, rangesOpenData, ran
   return 'fold'
 }
 
-/** Boutons de réponse à afficher pour un spot donné (CALL seulement si la range le prévoit vraiment). */
-export function buttonsForSpot(spot, contextKey, rangesOpenData) {
+/**
+ * Boutons de réponse à afficher pour un spot donné.
+ * En open-raise, CALL reste affiché même si ce n'est jamais la bonne réponse : c'est le piège du
+ * limp, qu'on veut volontairement laisser le débutant tester (feedback dédié à la clé).
+ */
+export function buttonsForSpot(spot) {
   if (spot === 'open') {
-    const hasCall = !!rangesOpenData.positions[contextKey].call?.length
-    const buttons = [{ action: 'fold', label: 'FOLD', cls: 'r' }]
-    if (hasCall) buttons.push({ action: 'call', label: 'CALL', cls: 'b' })
-    buttons.push({ action: 'raise', label: 'RAISE', cls: 'g' })
-    return buttons
+    return [
+      { action: 'fold', label: 'FOLD', cls: 'r' },
+      { action: 'call', label: 'CALL', cls: 'b' },
+      { action: 'raise', label: 'RAISE', cls: 'g' },
+    ]
   }
   if (spot === 'bb_defense') {
     return [

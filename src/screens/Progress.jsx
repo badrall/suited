@@ -19,7 +19,7 @@ export default function Progress() {
   const { days, monthLabel } = getMonthCalendar(state.streak.playedDates)
 
   return (
-    <div className="screen">
+    <div className="screen with-nav">
       <div className="watermark">
         <span style={{ bottom: 60, right: -36 }}>♥</span>
       </div>

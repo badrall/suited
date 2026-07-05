@@ -14,7 +14,7 @@ export default function Home({ onPlay, onNavigate }) {
     .sort((a, b) => a.v - b.v)[0]
 
   return (
-    <div className="screen">
+    <div className="screen with-nav">
       <div className="watermark">
         <span style={{ bottom: 60, right: -30 }}>♠</span>
       </div>

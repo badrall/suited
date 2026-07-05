@@ -6,9 +6,9 @@ import { seatPhrase, seatLabel, buttonsForSpot } from '../lib/hands'
 // Sizings illustratifs par spot (pot au moment de la question), juste pour donner le contexte visuel.
 const POT_LABEL_BY_SPOT = { open: '1,5 bb', bb_defense: '5,5 bb', vs_3bet: '25 bb' }
 
-export default function Drill({ question, index, total, onAnswer, onQuit, rangesOpenData }) {
+export default function Drill({ question, index, total, onAnswer, onQuit }) {
   const percent = (index / total) * 100
-  const buttons = buttonsForSpot(question.spot, question.contextKey, rangesOpenData)
+  const buttons = buttonsForSpot(question.spot)
   const markedSeat = question.spot === 'bb_defense' ? question.openerSeat : question.spot === 'vs_3bet' ? question.villainSeat : null
 
   return (

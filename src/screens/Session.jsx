@@ -99,14 +99,5 @@ export default function Session({ config, onFinish }) {
     )
   }
 
-  return (
-    <Drill
-      question={question}
-      index={index}
-      total={SESSION_SIZE}
-      onAnswer={handleAnswer}
-      onQuit={onFinish}
-      rangesOpenData={rangesOpenData}
-    />
-  )
+  return <Drill question={question} index={index} total={SESSION_SIZE} onAnswer={handleAnswer} onQuit={onFinish} />
 }
