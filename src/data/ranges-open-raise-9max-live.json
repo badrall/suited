@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "game": "NLHE cash live",
+    "format": "9-max",
+    "stack": "100bb",
+    "spot": "open_raise",
+    "version": "0.1-draft",
+    "note": "Ranges simplifiées pédagogiques, légèrement plus tight qu'un GTO online pour exploiter des tables live passives. Action par défaut : fold. À faire relire par un joueur confirmé avant intégration.",
+    "position_groups": {
+      "EP": ["UTG", "UTG+1", "UTG+2"],
+      "MP": ["LJ", "HJ"],
+      "CO": ["CO"],
+      "BTN": ["BTN"],
+      "SB": ["SB"]
+    },
+    "sizing_conseille": "3.5-4bb en live (vs 2.2-2.5bb online) — les tables live ne foldent pas assez sur les petits sizings"
+  },
+  "positions": {
+    "EP": {
+      "vpip_approx": "8%",
+      "raise": ["AA", "KK", "QQ", "JJ", "TT", "99", "88", "77", "66", "AKs", "AQs", "AJs", "ATs", "KQs", "AKo", "AQo"],
+      "frontier_raise": ["66", "77", "ATs", "KQs", "AQo"],
+      "frontier_fold": ["55", "A9s", "KJs", "QJs", "AJo"]
+    },
+    "MP": {
+      "vpip_approx": "13%",
+      "raise": ["AA", "KK", "QQ", "JJ", "TT", "99", "88", "77", "66", "55", "AKs", "AQs", "AJs", "ATs", "A9s", "KQs", "KJs", "QJs", "JTs", "AKo", "AQo", "AJo", "KQo"],
+      "frontier_raise": ["55", "A9s", "KJs", "QJs", "JTs", "AJo", "KQo"],
+      "frontier_fold": ["44", "A8s", "A5s", "KTs", "QTs", "T9s", "ATo", "KJo"]
+    },
+    "CO": {
+      "vpip_approx": "22%",
+      "raise": ["AA", "KK", "QQ", "JJ", "TT", "99", "88", "77", "66", "55", "44", "33", "22", "AKs", "AQs", "AJs", "ATs", "A9s", "A8s", "A7s", "A5s", "KQs", "KJs", "KTs", "K9s", "QJs", "QTs", "Q9s", "JTs", "J9s", "T9s", "98s", "AKo", "AQo", "AJo", "ATo", "KQo", "KJo", "QJo"],
+      "frontier_raise": ["22", "33", "A7s", "A5s", "K9s", "Q9s", "J9s", "98s", "ATo", "KJo", "QJo"],
+      "frontier_fold": ["A6s", "A4s", "K8s", "Q8s", "J8s", "87s", "A9o", "KTo", "QTo", "JTo"]
+    },
+    "BTN": {
+      "vpip_approx": "40%",
+      "raise": ["AA", "KK", "QQ", "JJ", "TT", "99", "88", "77", "66", "55", "44", "33", "22", "AKs", "AQs", "AJs", "ATs", "A9s", "A8s", "A7s", "A6s", "A5s", "A4s", "A3s", "A2s", "KQs", "KJs", "KTs", "K9s", "K8s", "K7s", "QJs", "QTs", "Q9s", "Q8s", "JTs", "J9s", "J8s", "T9s", "T8s", "98s", "97s", "87s", "76s", "65s", "AKo", "AQo", "AJo", "ATo", "A9o", "A8o", "A7o", "KQo", "KJo", "KTo", "K9o", "QJo", "QTo", "Q9o", "JTo", "J9o", "T9o"],
+      "frontier_raise": ["K7s", "Q8s", "J8s", "T8s", "97s", "76s", "65s", "A7o", "K9o", "Q9o", "J9o", "T9o"],
+      "frontier_fold": ["K6s", "Q7s", "J7s", "T7s", "96s", "86s", "75s", "54s", "A6o", "A5o", "K8o", "Q8o", "J8o", "98o"]
+    },
+    "SB": {
+      "vpip_approx": "33%",
+      "strategie": "raise-or-fold (pas de limp/complete en V1 — simplification pédagogique assumée)",
+      "raise": ["AA", "KK", "QQ", "JJ", "TT", "99", "88", "77", "66", "55", "44", "33", "22", "AKs", "AQs", "AJs", "ATs", "A9s", "A8s", "A7s", "A6s", "A5s", "A4s", "A3s", "A2s", "KQs", "KJs", "KTs", "K9s", "K8s", "QJs", "QTs", "Q9s", "JTs", "J9s", "T9s", "T8s", "98s", "87s", "76s", "AKo", "AQo", "AJo", "ATo", "A9o", "A8o", "KQo", "KJo", "KTo", "QJo", "QTo", "JTo"],
+      "frontier_raise": ["A2s", "K8s", "Q9s", "J9s", "T8s", "87s", "76s", "A8o", "KTo", "QTo", "JTo"],
+      "frontier_fold": ["K7s", "Q8s", "J8s", "T7s", "97s", "86s", "65s", "A7o", "A5o", "K9o", "Q9o", "J9o", "T9o"]
+    }
+  }
+}

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Maquette UI v1.2 — Suited</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#58CC02; --green-dark:#46A302; --blue:#1CB0F6; --blue-dark:#1899D6;
+    --red:#FF4B4B; --red-dark:#EA2B2B; --yellow:#FFC800; --orange:#FF9600;
+    --purple:#CE82FF; --ink:#3C3C3C; --gray:#777; --line:#E8E2D8; --paper:#FAF7F2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+  body{background:#ECEFF4;padding:32px;color:var(--ink)}
+  h1{font-weight:900;margin-bottom:4px}
+  .sub{color:var(--gray);margin-bottom:28px;font-weight:700;max-width:900px}
+  .row{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+  .col{display:flex;flex-direction:column;gap:10px}
+  .col>span{font-weight:900;color:#4B6584;text-align:center}
+  .phone{width:320px;height:664px;border-radius:40px;border:11px solid #23233B;background:var(--paper);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 16px 32px rgba(35,35,59,.18);position:relative}
+  .wm{position:absolute;font-size:150px;opacity:.04;pointer-events:none;font-weight:900;line-height:1}
+  .screen{flex:1;overflow:hidden;display:flex;flex-direction:column;padding:14px 16px 0;position:relative}
+  .ico{width:20px;height:20px;fill:currentColor;display:inline-block;vertical-align:-4px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .chip{display:flex;align-items:center;gap:4px;font-weight:900;font-size:15px}
+  .chip.fire{color:var(--orange)} .chip.xp{color:#E6B400} .chip.iq{color:var(--blue)}
+  .nav{display:flex;border-top:2px solid var(--line);background:#fff;padding:8px 6px 12px;z-index:2}
+  .nav div{flex:1;text-align:center;opacity:.35;color:var(--ink)}
+  .nav div.on{opacity:1;color:var(--green-dark)}
+  .nav .ico{width:22px;height:22px}
+  .nav div span{display:block;font-size:8.5px;font-weight:900;letter-spacing:.4px}
+  .btn{display:block;width:100%;text-align:center;font-weight:900;font-size:16px;letter-spacing:.6px;color:#fff;padding:14px 0;border-radius:16px;border:none;cursor:pointer}
+  .btn.g{background:var(--green);box-shadow:0 4px 0 var(--green-dark)}
+  .btn.b{background:var(--blue);box-shadow:0 4px 0 var(--blue-dark)}
+  .btn.r{background:var(--red);box-shadow:0 4px 0 var(--red-dark)}
+  .btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--line);box-shadow:0 3px 0 var(--line)}
+  .card{border:2px solid var(--line);border-radius:18px;padding:14px;background:#fff}
+  .bar{height:14px;background:var(--line);border-radius:8px;overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:8px}
+  .hero{background:linear-gradient(135deg,#58CC02,#2FB57C);border-radius:22px;padding:18px;color:#fff;margin-bottom:12px;position:relative;overflow:hidden}
+  .hero .suits{position:absolute;right:-6px;top:-10px;font-size:64px;opacity:.18;transform:rotate(18deg)}
+  .hero h3{font-size:20px;font-weight:900;margin-bottom:2px}
+  .hero p{font-weight:800;font-size:13px;opacity:.9;margin-bottom:12px}
+  .hero .btn{background:#fff;color:#2FB57C;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+  .ringwrap{display:flex;align-items:center;gap:14px}
+  .ring{width:74px;height:74px;border-radius:50%;background:conic-gradient(var(--green) 0 68%,var(--line) 68% 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ring b{width:54px;height:54px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:var(--green)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mode{border-radius:18px;padding:12px;color:#fff;font-weight:900;font-size:13px;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+  .mode i{font-style:normal;font-size:24px}
+  .mode small{font-weight:800;font-size:10px;opacity:.85}
+  .locked{opacity:.45;filter:grayscale(.6)}
+  .progress{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .progress .bar{flex:1}
+  .table{background:radial-gradient(ellipse at center,#2FB57C 0%,#1E9E68 72%);border:6px solid #8a5a2b;outline:3px solid #6d4520;border-radius:110px;height:196px;position:relative;margin:8px 4px 14px;box-shadow:inset 0 10px 30px rgba(0,0,0,.25)}
+  .seat{position:absolute;width:32px;height:32px;border-radius:50%;background:#fff;border:2px solid var(--line);font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;color:#999}
+  .seat.me{background:var(--yellow);border-color:#E6B400;color:#7A5C00;width:42px;height:42px;font-size:11px;box-shadow:0 0 0 4px rgba(255,200,0,.35)}
+  .ctx{text-align:center;font-weight:800;font-size:12px;color:var(--gray);margin-bottom:8px}
+  .hole{display:flex;justify-content:center;gap:12px;margin-bottom:12px}
+  .pcard{width:92px;height:126px;background:linear-gradient(160deg,#fff 70%,#F4EFE7);border:1.5px solid #D8D2C6;border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,.15);display:flex;flex-direction:column;justify-content:space-between;padding:8px;font-weight:900}
+  .pcard .r{font-size:32px;line-height:1}.pcard .s{font-size:36px;text-align:right;line-height:1}
+  .black{color:#23233B}.redsuit{color:#D6273B}
+  .answers{display:flex;gap:8px;margin-top:auto;margin-bottom:12px}
+  .fb{background:#FFF1F1;border:2px solid #FFD1D1;border-radius:18px;padding:14px;margin-bottom:10px}
+  .fb h4{color:var(--red-dark);font-size:16px;font-weight:900;margin-bottom:4px}
+  .fb .good{color:var(--green-dark);font-weight:900}
+  .fb p{font-size:12.5px;font-weight:700;color:#5b5b5b;margin-top:6px;line-height:1.45}
+  .stat{background:#EAF7FF;border:2px solid #BEE7FF;border-radius:14px;padding:10px 12px;margin-bottom:10px}
+  .stat b{color:var(--blue-dark);font-size:12px}
+  .equity{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:11px;font-weight:900}
+  .iqcard{background:linear-gradient(135deg,#1CB0F6,#7C5CFF);border-radius:22px;color:#fff;padding:16px;text-align:center;margin-bottom:12px}
+  .iqcard .score{font-size:44px;font-weight:900;line-height:1}
+  .iqcard .lvl{background:rgba(255,255,255,.22);display:inline-block;border-radius:999px;padding:4px 12px;font-weight:900;font-size:12px;margin-top:8px}
+  .pos{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-weight:900;font-size:12px}
+  .pos span{width:34px}.pos .bar{flex:1}.pos b{width:38px;text-align:right}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
+  .cal i{height:22px;border-radius:6px;background:var(--paper);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:10px;font-weight:800;color:#bbb}
+  .cal i.ok{background:var(--yellow);border-color:#E6B400;color:#7A5C00}
+  h5{font-weight:900;font-size:13px;margin:6px 0 8px;color:#4B6584;text-transform:uppercase;letter-spacing:.5px}
+  .cat{border:2px solid var(--line);border-radius:16px;background:#fff;padding:11px 14px;margin-bottom:8px;border-left-width:6px}
+  .cat .head{display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:13.5px}
+  .cat .count{color:var(--gray);font-size:11px;font-weight:800;background:var(--paper);border-radius:999px;padding:2px 9px}
+  .cat .term{border-top:1.5px solid var(--line);margin-top:9px;padding-top:8px;font-size:11.5px;font-weight:700;color:#5b5b5b;line-height:1.4}
+  .cat .term b{color:var(--ink)}
+  .search{display:flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--line);border-radius:999px;padding:10px 14px;margin-bottom:12px;color:var(--gray);font-weight:800;font-size:13px}
+</style>
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M12 3 2 12h3v8h6v-5h2v5h6v-8h3z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></symbol>
+  <symbol id="i-cards" viewBox="0 0 24 24"><path d="M7 3h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm12 4 1.8.5a2 2 0 0 1 1.4 2.4L20 19a2 2 0 0 1-1 1.3V7z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6.5A2.5 2.5 0 0 0 4 21.5V4zm2 13h12V4H6v13z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10h3v10H4zm6.5 0V4h3v16h-3zM17 20v-7h3v7h-3z"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 2s5 4.5 5 9a5 5 0 0 1-10 0c0-1.5.5-3 1.5-4.5C9 8 10 9 11 9c-.5-2.5 0-5 1-7z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></symbol>
+  <symbol id="i-brain" viewBox="0 0 24 24"><path d="M9 3a3 3 0 0 0-3 3 3.5 3.5 0 0 0-2 3.2c0 1 .4 1.9 1.1 2.5A3.6 3.6 0 0 0 6 17a3 3 0 0 0 3 3c.8 0 1.5-.3 2-.8V3.8c-.5-.5-1.2-.8-2-.8zm6 0c-.8 0-1.5.3-2 .8v15.4c.5.5 1.2.8 2 .8a3 3 0 0 0 3-3 3.6 3.6 0 0 0 .9-5.3c.7-.6 1.1-1.5 1.1-2.5A3.5 3.5 0 0 0 18 6a3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><path d="M10 2a8 8 0 1 0 4.9 14.3l5 5 1.4-1.4-5-5A8 8 0 0 0 10 2zm0 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2zm-2 18h4v1a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1z"/></symbol>
+</svg>
+<h1>Maquette UI v1.2 — Suited</h1>
+<p class="sub">Retours Guillaume intégrés : fond chaud non blanc + filigrane ♠♣, zéro emoji (icônes SVG), bouton CALL, table réaliste agrandie (~40 % de l'écran), cartes premium, sizing conseillé après raise, Jargon retravaillé. Reste pour l'app live : filigrane logo, typo définitive, hiérarchie accueil (revue UI du 18/07).</p>
+<div class="row">
+
+<!-- ACCUEIL -->
+<div class="col"><span>1 · Accueil</span>
+<div class="phone"><div class="wm" style="bottom:70px;right:-30px">♠</div><div class="screen">
+  <div class="topbar">
+    <div class="chip fire"><svg class="ico"><use href="#i-flame"/></svg>12</div>
+    <div class="chip iq"><svg class="ico"><use href="#i-brain"/></svg>IQ 61</div>
+    <div class="chip xp"><svg class="ico"><use href="#i-star"/></svg>2 340</div>
+  </div>
+  <div class="hero"><div class="suits">♠♥</div>
+    <h3>Session du jour</h3><p>10 mains · 3 min · mix des positions</p>
+    <button class="btn">JOUER</button>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:10px"><div class="bar" style="flex:1"><i style="width:60%;background:#fff"></i></div><b style="font-size:11px">6/10 mains</b></div>
+  </div>
+  <div class="card" style="margin-bottom:12px"><div class="ringwrap">
+    <div class="ring"><b>68%</b></div>
+    <div><b style="font-size:14px">Maîtrise préflop</b><br><small style="font-weight:800;color:var(--gray)">Point faible : CO (45 %) → série Focus CO conseillée</small></div>
+  </div></div>
+  <button class="btn b" style="margin-bottom:10px">SÉRIES PAR POSITION</button>
+  <button class="btn ghost">Consulter les charts</button>
+  <div class="nav" style="margin:auto -16px 0"><div class="on"><svg class="ico"><use href="#i-home"/></svg><span>ACCUEIL</span></div><div><svg class="ico"><use href="#i-target"/></svg><span>SÉRIES</span></div><div><svg class="ico"><use href="#i-cards"/></svg><span>CHARTS</span></div><div><svg class="ico"><use href="#i-book"/></svg><span>JARGON</span></div><div><svg class="ico"><use href="#i-chart"/></svg><span>PROGRÈS</span></div></div>
+</div></div></div>
+
+<!-- SÉRIES -->
+<div class="col"><span>2 · Séries (façon code de la route)</span>
+<div class="phone"><div class="wm" style="top:120px;left:-40px">♣</div><div class="screen">
+  <div class="topbar"><b style="font-size:17px;font-weight:900">Entraînement</b><div class="chip fire"><svg class="ico"><use href="#i-flame"/></svg>12</div></div>
+  <h5>Le mix</h5>
+  <div class="mode" style="background:linear-gradient(135deg,#58CC02,#2FB57C);min-height:62px;margin-bottom:12px;flex-direction:row;align-items:center;gap:12px"><i>♠♥</i><div>Mix du jour<br><small>toutes positions · adaptatif</small></div></div>
+  <h5>Focus par position</h5>
+  <div class="grid" style="margin-bottom:12px">
+    <div class="mode" style="background:var(--blue)"><i>♠</i>Focus EP<small>▓▓▓▓░ 85 %</small></div>
+    <div class="mode" style="background:var(--purple)"><i>♣</i>Focus CO<small>▓▓░░░ 45 % — priorité</small></div>
+    <div class="mode" style="background:var(--orange)"><i>◉</i>Focus BTN<small>▓▓▓░░ 62 %</small></div>
+    <div class="mode" style="background:#FF6DA3"><i>♦</i>Focus Blinds<small>▓▓▓░░ 58 %</small></div>
+  </div>
+  <h5>Par situation</h5>
+  <div class="grid">
+    <div class="mode" style="background:#00C2B8"><i>↑</i>Open-raise<small>débloqué</small></div>
+    <div class="mode locked" style="background:#8898AA"><i>▲</i>Face à un 3-bet<small>atteins IQ 65</small></div>
+  </div>
+  <div class="nav" style="margin:auto -16px 0"><div><svg class="ico"><use href="#i-home"/></svg><span>ACCUEIL</span></div><div class="on"><svg class="ico"><use href="#i-target"/></svg><span>SÉRIES</span></div><div><svg class="ico"><use href="#i-cards"/></svg><span>CHARTS</span></div><div><svg class="ico"><use href="#i-book"/></svg><span>JARGON</span></div><div><svg class="ico"><use href="#i-chart"/></svg><span>PROGRÈS</span></div></div>
+</div></div></div>
+
+<!-- DRILL -->
+<div class="col"><span>3 · Drill — table agrandie + CALL</span>
+<div class="phone"><div class="screen">
+  <div class="progress"><b style="color:var(--gray)">✕</b><div class="bar"><i style="width:30%;background:var(--green)"></i></div><b style="font-size:12px;color:var(--gray)">3/10</b></div>
+  <div class="table">
+    <div class="seat" style="top:-14px;left:52px">UTG</div><div class="seat" style="top:-14px;left:132px">MP</div><div class="seat" style="top:-14px;right:52px">HJ</div>
+    <div class="seat" style="top:80px;left:-12px">BB</div><div class="seat" style="top:80px;right:-12px">CO</div>
+    <div class="seat" style="bottom:-14px;left:48px">SB</div><div class="seat me" style="bottom:-18px;left:128px">MOI</div><div class="seat" style="bottom:-14px;right:48px">BTN</div>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:900;gap:4px"><span style="font-size:11px;opacity:.8">POT</span><span style="font-size:16px">3,5 bb</span></div>
+  </div>
+  <div class="ctx">Tu es au <b style="color:#7C5CFF">CUTOFF</b> · 100bb · foldé jusqu'à toi</div>
+  <div class="hole">
+    <div class="pcard black"><div class="r">A</div><div class="s">♠</div></div>
+    <div class="pcard redsuit"><div class="r">9</div><div class="s">♦</div></div>
+  </div>
+  <div class="answers">
+    <button class="btn r" style="font-size:14px">FOLD</button>
+    <button class="btn b" style="font-size:14px">CALL</button>
+    <button class="btn g" style="font-size:14px">RAISE</button>
+  </div>
+  <div class="nav" style="margin:0 -16px"><div><svg class="ico"><use href="#i-home"/></svg><span>ACCUEIL</span></div><div class="on"><svg class="ico"><use href="#i-target"/></svg><span>SÉRIES</span></div><div><svg class="ico"><use href="#i-cards"/></svg><span>CHARTS</span></div><div><svg class="ico"><use href="#i-book"/></svg><span>JARGON</span></div><div><svg class="ico"><use href="#i-chart"/></svg><span>PROGRÈS</span></div></div>
+</div></div></div>
+
+<!-- FEEDBACK -->
+<div class="col"><span>4 · Feedback erreur + sizing</span>
+<div class="phone"><div class="screen">
+  <div class="progress"><b style="color:var(--gray)">✕</b><div class="bar"><i style="width:30%;background:var(--green)"></i></div><b style="font-size:12px;color:var(--gray)">3/10</b></div>
+  <div class="hole" style="margin-top:2px">
+    <div class="pcard black" style="width:62px;height:84px"><div class="r" style="font-size:22px">A</div><div class="s" style="font-size:24px">♠</div></div>
+    <div class="pcard redsuit" style="width:62px;height:84px"><div class="r" style="font-size:22px">9</div><div class="s" style="font-size:24px">♦</div></div>
+  </div>
+  <div class="fb">
+    <h4>✗ Pas tout à fait…</h4>
+    <div style="font-size:13px;font-weight:800">La bonne action : <span class="good">RAISE ✓</span> <span style="color:var(--gray)">(tu as répondu Fold)</span></div>
+    <p><b>A9s fait partie des dernières mains qu'on ouvre au CO.</b> Suité, il fabrique des couleurs max et bloque les As adverses — et avec 4 joueurs derrière, voler les blinds est rentable.</p>
+  </div>
+  <div class="stat">
+    <b><svg class="ico" style="width:14px;height:14px"><use href="#i-chart"/></svg> LA STAT</b>
+    <div class="equity"><span>A9s vs main aléatoire</span><div class="bar" style="flex:1"><i style="width:63%;background:var(--blue)"></i></div><b>63 %</b></div>
+    <div class="equity"><span>A9o (non suité)</span><div class="bar" style="flex:1"><i style="width:61%;background:#B8C4CE"></i></div><b>61 %</b></div>
+  </div>
+  <div class="stat" style="background:#FFF8E1;border-color:#FFE082">
+    <b style="color:#A67C00"><svg class="ico" style="width:14px;height:14px"><use href="#i-bulb"/></svg> SIZING</b>
+    <div style="font-size:11.5px;font-weight:800;color:#6d5b1e;margin-top:4px">En live, ouvre à 4bb (20 € à 2/5) — les petits sizings ne font folder personne.</div>
+  </div>
+  <button class="btn b" style="margin-top:auto;margin-bottom:14px">COMPRIS, SUIVANT</button>
+</div></div></div>
+
+<!-- PROGRESSION -->
+<div class="col"><span>5 · Progression & Poker IQ</span>
+<div class="phone"><div class="wm" style="bottom:60px;right:-36px">♥</div><div class="screen">
+  <div class="topbar"><b style="font-size:17px;font-weight:900">Ton niveau</b><div class="chip fire"><svg class="ico"><use href="#i-flame"/></svg>12</div></div>
+  <div class="iqcard">
+    <div style="font-weight:900;font-size:12px;opacity:.85">POKER IQ · PRÉFLOP</div>
+    <div class="score">61</div>
+    <div class="lvl">ABC Player</div>
+    <div style="font-size:11px;font-weight:800;margin-top:8px;opacity:.92">Tu tiens une table 1/2 souple. Prochain palier (65) : <b>Solide</b> — prêt pour un tournoi live à 100 €.</div>
+  </div>
+  <h5>Maîtrise par position</h5>
+  <div class="card" style="margin-bottom:12px">
+    <div class="pos"><span>EP</span><div class="bar"><i style="width:85%;background:var(--green)"></i></div><b>85 %</b></div>
+    <div class="pos"><span>MP</span><div class="bar"><i style="width:72%;background:var(--green)"></i></div><b>72 %</b></div>
+    <div class="pos"><span>CO</span><div class="bar"><i style="width:45%;background:var(--red)"></i></div><b>45 %</b></div>
+    <div class="pos"><span>BTN</span><div class="bar"><i style="width:62%;background:var(--orange)"></i></div><b>62 %</b></div>
+    <div class="pos" style="margin-bottom:0"><span>SB</span><div class="bar"><i style="width:58%;background:var(--orange)"></i></div><b>58 %</b></div>
+  </div>
+  <h5>Juillet · streak</h5>
+  <div class="card"><div class="cal">
+    <i class="ok">1</i><i class="ok">2</i><i class="ok">3</i><i class="ok">4</i><i>5</i><i>6</i><i>7</i>
+    <i class="ok">8</i><i class="ok">9</i><i class="ok">10</i><i class="ok">11</i><i class="ok">12</i><i class="ok">13</i><i class="ok">14</i>
+  </div></div>
+  <div class="nav" style="margin:auto -16px 0"><div><svg class="ico"><use href="#i-home"/></svg><span>ACCUEIL</span></div><div><svg class="ico"><use href="#i-target"/></svg><span>SÉRIES</span></div><div><svg class="ico"><use href="#i-cards"/></svg><span>CHARTS</span></div><div><svg class="ico"><use href="#i-book"/></svg><span>JARGON</span></div><div class="on"><svg class="ico"><use href="#i-chart"/></svg><span>PROGRÈS</span></div></div>
+</div></div></div>
+
+<!-- LE JARGON -->
+<div class="col"><span>6 · Le Jargon (visualisation v2)</span>
+<div class="phone"><div class="wm" style="top:180px;right:-30px">♦</div><div class="screen">
+  <div class="topbar"><b style="font-size:17px;font-weight:900">Le Jargon</b><div class="chip fire"><svg class="ico"><use href="#i-flame"/></svg>12</div></div>
+  <div class="search"><svg class="ico" style="width:16px;height:16px"><use href="#i-search"/></svg>Chercher un terme…</div>
+  <div class="card" style="background:#FFF8E1;border-color:#FFE082;margin-bottom:12px;padding:12px 14px">
+    <b style="color:#A67C00;font-size:11px;letter-spacing:.5px"><svg class="ico" style="width:14px;height:14px"><use href="#i-bulb"/></svg> LE MOT DU JOUR</b>
+    <div style="font-size:15px;font-weight:900;margin-top:3px">Blocker</div>
+    <div style="font-size:11.5px;font-weight:700;color:#6d5b1e;line-height:1.4">Une carte en ta possession qui réduit les combinaisons adverses : avec un As, l'adversaire a moins souvent AA.</div>
+  </div>
+  <div class="cat" style="border-left-color:var(--green)">
+    <div class="head"><span>Les bases</span><span class="count">15 ▾</span></div>
+    <div class="term"><b>Équité</b> — tes chances de gagner le pot si toutes les cartes étaient retournées maintenant.</div>
+    <div class="term"><b>Range</b> — l'ensemble des mains possibles d'un joueur dans une situation donnée.</div>
+  </div>
+  <div class="cat" style="border-left-color:var(--blue)"><div class="head"><span>Les actions</span><span class="count">15 ▸</span></div></div>
+  <div class="cat" style="border-left-color:var(--purple)"><div class="head"><span>Les positions</span><span class="count">11 ▸</span></div></div>
+  <div class="cat" style="border-left-color:var(--orange)"><div class="head"><span>Les mains & le board</span><span class="count">15 ▸</span></div></div>
+  <div class="cat" style="border-left-color:#FF6DA3"><div class="head"><span>Méta-jeu & profils</span><span class="count">13 ▸</span></div></div>
+  <div class="nav" style="margin:auto -16px 0"><div><svg class="ico"><use href="#i-home"/></svg><span>ACCUEIL</span></div><div><svg class="ico"><use href="#i-target"/></svg><span>SÉRIES</span></div><div><svg class="ico"><use href="#i-cards"/></svg><span>CHARTS</span></div><div class="on"><svg class="ico"><use href="#i-book"/></svg><span>JARGON</span></div><div><svg class="ico"><use href="#i-chart"/></svg><span>PROGRÈS</span></div></div>
+</div></div></div>
+
+</div>
+</body>
+</html>
