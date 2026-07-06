@@ -208,6 +208,24 @@ function getFrontierSet(spot, contextKey, rangesOpenData, rangesDefenseData) {
   return new Set([...d.frontier_4bet, ...d.frontier_call, ...d.frontier_fold])
 }
 
+/**
+ * Univers de mains tirées pour un contexte donné.
+ * - open : n'importe laquelle des 169 mains (on peut recevoir n'importe quoi avant d'ouvrir).
+ * - bb_defense / vs_3bet : UNIQUEMENT les mains réellement en jeu, celles listées dans le JSON
+ *   (continues + folds frontières). En vs_3bet, ça évite de présenter des mains qu'on n'aurait
+ *   jamais ouvertes (donc pas de "fold" absurde) ; dans les deux spots, ça retire les folds triviaux
+ *   sans valeur pédagogique. La pondération frontière (weightFor) s'applique ensuite dans ce pool.
+ */
+export function candidatePool(spot, contextKey, rangesOpenData, rangesDefenseData) {
+  if (spot === 'open') return ALL_NOTATIONS
+  if (spot === 'bb_defense') {
+    const d = rangesDefenseData.bb_defense[contextKey]
+    return [...new Set([...d['3bet'], ...d.call, ...d.frontier_fold])]
+  }
+  const d = rangesDefenseData.vs_3bet[contextKey]
+  return [...new Set([...d['4bet'], ...d.call, ...d.frontier_fold])]
+}
+
 /** Détermine la bonne action pour une main, selon le spot et la structure réelle du JSON concerné. */
 export function correctActionFor(spot, contextKey, notation, rangesOpenData, rangesDefenseData) {
   if (spot === 'open') {
@@ -362,6 +380,7 @@ export function generateNextQuestion(config, srsMap, totalAnswered, rangesOpenDa
 
   const ctx = contexts[Math.floor(Math.random() * contexts.length)]
   const frontierSet = getFrontierSet(ctx.spot, ctx.contextKey, rangesOpenData, rangesDefenseData)
-  const notation = weightedChoice(ALL_NOTATIONS, (n) => weightFor(n, frontierSet))
+  const pool = candidatePool(ctx.spot, ctx.contextKey, rangesOpenData, rangesDefenseData)
+  const notation = weightedChoice(pool, (n) => weightFor(n, frontierSet))
   return assembleQuestion(ctx.spot, ctx.group, ctx.contextKey, notation, rangesOpenData, rangesDefenseData)
 }
