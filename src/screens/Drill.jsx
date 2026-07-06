@@ -1,6 +1,7 @@
 import PlayingCard from '../components/PlayingCard'
 import PokerTable from '../components/PokerTable'
 import ProgressBar from '../components/ProgressBar'
+import JargonText from '../components/JargonText'
 import { seatPhrase, seatLabel, buttonsForSpot } from '../lib/hands'
 
 // Sizings illustratifs par spot (pot au moment de la question), juste pour donner le contexte visuel.
@@ -28,17 +29,28 @@ export default function Drill({ question, index, total, onAnswer, onQuit }) {
       <div className="ctx">
         {question.spot === 'open' && (
           <>
-            Tu es <b>{seatPhrase(question.seat)}</b> · 100bb · foldé jusqu'à toi
+            Tu es{' '}
+            <b>
+              <JargonText text={seatPhrase(question.seat)} />
+            </b>{' '}
+            · <JargonText text="100bb · foldé jusqu'à toi" />
           </>
         )}
         {question.spot === 'bb_defense' && (
           <>
-            <b>{seatLabel(question.openerSeat)}</b> ouvre · tu es en <b>BIG BLIND</b> · 100bb
+            <b>
+              <JargonText text={seatLabel(question.openerSeat)} />
+            </b>{' '}
+            <JargonText text="ouvre" /> · <JargonText text="tu es en" /> <b>BIG BLIND</b> · 100bb
           </>
         )}
         {question.spot === 'vs_3bet' && (
           <>
-            Tu as ouvert {seatPhrase(question.seat)} · <b>{seatLabel(question.villainSeat)}</b> te 3-bette · 100bb
+            <JargonText text="Tu as ouvert" /> <JargonText text={seatPhrase(question.seat)} /> ·{' '}
+            <b>
+              <JargonText text={seatLabel(question.villainSeat)} />
+            </b>{' '}
+            <JargonText text="te 3-bette · 100bb" />
           </>
         )}
       </div>

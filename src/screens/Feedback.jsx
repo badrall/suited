@@ -1,6 +1,7 @@
 import { Icon } from '../components/Icons'
 import PlayingCard from '../components/PlayingCard'
 import ProgressBar from '../components/ProgressBar'
+import JargonText from '../components/JargonText'
 import { getExplanation, getEquity, getTwin, sizingNote } from '../lib/hands'
 
 const ACTION_LABELS = { fold: 'FOLD', call: 'CALL', raise: 'RAISE', '3bet': '3-BET', '4bet': '4-BET' }
@@ -55,11 +56,12 @@ export default function Feedback({
         </div>
         {isLimpTrap && (
           <p className="limp-note">
-            Limper = le pire des deux mondes : tu investis sans initiative et tu annonces une main
-            faible.
+            <JargonText text="Limper = le pire des deux mondes : tu investis sans initiative et tu annonces une main faible." />
           </p>
         )}
-        <p>{explanation.text}</p>
+        <p>
+          <JargonText text={explanation.text} />
+        </p>
       </div>
 
       {equity !== undefined && (
@@ -81,7 +83,11 @@ export default function Feedback({
               <b>{twin.equity}%</b>
             </div>
           )}
-          {nugget && <div className="nugget">{nugget}</div>}
+          {nugget && (
+            <div className="nugget">
+              <JargonText text={nugget} />
+            </div>
+          )}
         </div>
       )}
 

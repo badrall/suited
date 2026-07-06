@@ -5,6 +5,8 @@ import ProgressBar from '../components/ProgressBar'
 import { loadState, getOverallMastery, getAllMastery, getPokerIQ, getTrainingRank, acknowledgeRankUp, hasPlayedToday } from '../lib/storage'
 import { ALL_HERO_GROUPS } from '../lib/hands'
 import { getNotificationPermission, requestNotificationPermission, scheduleDailyReminder } from '../lib/notifications'
+import { pickTermOfDay } from '../lib/jargon'
+import { useJargonNavigate } from '../lib/JargonNavigation'
 
 export default function Home({ onPlay, onNavigate }) {
   const state = loadState()
@@ -44,6 +46,10 @@ export default function Home({ onPlay, onNavigate }) {
   const weakest = ALL_HERO_GROUPS.map((g) => ({ g, v: byPosition[g] }))
     .filter((p) => p.v != null && p.v < 75)
     .sort((a, b) => a.v - b.v)[0]
+
+  // Seedé par la date du jour (pas Math.random) : stable toute la journée, change le lendemain.
+  const termOfDay = pickTermOfDay()
+  const goToJargon = useJargonNavigate()
 
   return (
     <div className="screen with-nav">
@@ -113,6 +119,17 @@ export default function Home({ onPlay, onNavigate }) {
             </small>
           </div>
         </div>
+      </div>
+
+      <div className="card word-of-day" style={{ marginBottom: 12 }}>
+        <b>
+          <Icon name="bulb" style={{ width: 14, height: 14 }} /> LE MOT DU JOUR
+        </b>
+        <div className="word-of-day-term">{termOfDay.displayName}</div>
+        <p>{termOfDay.definition}</p>
+        <button type="button" className="link" onClick={() => goToJargon(termOfDay.core)}>
+          Voir dans Le Jargon
+        </button>
       </div>
 
       <button type="button" className="btn b" style={{ marginBottom: 10 }} onClick={() => onNavigate('series')}>

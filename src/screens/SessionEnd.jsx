@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '../components/Icons'
+import JargonText from '../components/JargonText'
 import { getExplanation, seatPhrase } from '../lib/hands'
 
 // Compte de 0 jusqu'à target en ~700ms (easeOutCubic) — juste pour la satisfaction du chiffre qui monte.
@@ -110,7 +111,9 @@ export default function SessionEnd({
                       <Icon name="cross" style={{ width: 12, height: 12, color: 'var(--red)' }} />
                     </span>
                   </div>
-                  <p>{explanation.text}</p>
+                  <p>
+                    <JargonText text={explanation.text} />
+                  </p>
                 </div>
               )
             })}

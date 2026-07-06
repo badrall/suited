@@ -1,3 +1,4 @@
+import JargonText from '../components/JargonText'
 import { loadState, getMasteryForPositionFilter, getMasteryBySpot } from '../lib/storage'
 import { SPOT_LABELS } from '../lib/hands'
 
@@ -62,7 +63,7 @@ export default function Series({ onStart }) {
             onClick={() => onStart({ spot: null, group: tile.key })}
           >
             <i>♠</i>
-            {tile.label}
+            <JargonText text={tile.label} />
             <small>{masteryLabel(getMasteryForPositionFilter(state.history, tile.key))}</small>
           </button>
         ))}
@@ -79,7 +80,7 @@ export default function Series({ onStart }) {
             onClick={() => onStart({ spot: tile.key, group: null })}
           >
             <i>{tile.glyph}</i>
-            {SPOT_LABELS[tile.key]}
+            <JargonText text={SPOT_LABELS[tile.key]} />
             <small>{masteryLabel(getMasteryBySpot(state.history, tile.key))}</small>
           </button>
         ))}

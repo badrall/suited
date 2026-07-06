@@ -843,3 +843,163 @@ h5:first-child {
   color: #5b5b5b;
   line-height: 1.4;
 }
+
+/* ---------- Le Jargon (recherche + accordéons) ---------- */
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  color: var(--gray);
+}
+.search input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-weight: 800;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--ink);
+  background: none;
+}
+.search input::placeholder {
+  color: var(--gray);
+  font-weight: 700;
+}
+
+.cat {
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  padding: 2px 14px;
+  margin-bottom: 8px;
+  border-left-width: 6px;
+}
+.cat .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-weight: 900;
+  font-size: 13.5px;
+  background: none;
+  border: none;
+  padding: 11px 0;
+  color: var(--ink);
+  text-align: left;
+}
+.cat .count {
+  color: var(--gray);
+  font-size: 11px;
+  font-weight: 800;
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+.cat .term {
+  border-top: 1.5px solid var(--line);
+  padding: 9px 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #5b5b5b;
+  line-height: 1.4;
+}
+.cat .term b {
+  color: var(--ink);
+}
+.cat .term.term-highlight {
+  background: #fff8e1;
+  margin: 0 -14px;
+  padding: 9px 14px;
+  border-radius: 8px;
+}
+
+/* ---------- Tooltips de jargon (partout où du texte pédagogique s'affiche) ---------- */
+
+.jargon-term {
+  position: relative;
+  border-bottom: 1.5px dotted var(--gray);
+  cursor: pointer;
+}
+
+.jargon-popup {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 60;
+  width: max-content;
+  max-width: 220px;
+  background: #23233b;
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  white-space: normal;
+  cursor: default;
+}
+.jargon-popup b {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 3px;
+  color: var(--yellow);
+}
+.jargon-popup-def {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.jargon-popup .link {
+  color: var(--blue);
+}
+
+.jargon-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: block;
+}
+
+/* ---------- Mot du jour ---------- */
+
+.card.word-of-day {
+  background: #fff8e1;
+  border-color: #ffe082;
+}
+.word-of-day b {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #a67c00;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.word-of-day-term {
+  font-size: 15px;
+  font-weight: 900;
+  margin: 4px 0 2px;
+}
+.word-of-day p {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6d5b1e;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.link {
+  background: none;
+  border: none;
+  color: var(--blue-dark);
+  font-weight: 900;
+  font-size: 12px;
+  padding: 0;
+  cursor: pointer;
+  display: inline-block;
+}
