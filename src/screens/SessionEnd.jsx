@@ -1,12 +1,48 @@
+import { useEffect, useState } from 'react'
 import { Icon } from '../components/Icons'
 import { getExplanation, seatPhrase } from '../lib/hands'
 
-export default function SessionEnd({ answers, bonusXp, explicationsOpenData, explicationsSpotsData, onFinish }) {
+// Compte de 0 jusqu'à target en ~700ms (easeOutCubic) — juste pour la satisfaction du chiffre qui monte.
+function useCountUp(target, durationMs = 700) {
+  const [value, setValue] = useState(0)
+  useEffect(() => {
+    let raf
+    const start = performance.now()
+    function tick(now) {
+      const t = Math.min(1, (now - start) / durationMs)
+      const eased = 1 - (1 - t) ** 3
+      setValue(Math.round(target * eased))
+      if (t < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [target, durationMs])
+  return value
+}
+
+export default function SessionEnd({
+  answers,
+  bonusXp,
+  streakCount,
+  todayAccuracy,
+  startMastery,
+  endMastery,
+  explicationsOpenData,
+  explicationsSpotsData,
+  onFinish,
+}) {
   const total = answers.length
   const correctCount = answers.filter((a) => a.correct).length
   const accuracy = Math.round((correctCount / total) * 100)
   const earnedXp = answers.reduce((sum, a) => sum + a.xpGain, 0) + bonusXp
+  const animatedXp = useCountUp(earnedXp)
   const mistakes = answers.filter((a) => !a.correct)
+
+  // On ne célèbre que la progression (pas une régression ponctuelle sur 10 mains).
+  const masteryGained =
+    startMastery && endMastery && startMastery.value != null && endMastery.value != null && endMastery.value > startMastery.value
+      ? { label: endMastery.label, before: startMastery.value, after: endMastery.value }
+      : null
 
   return (
     <div className="screen">
@@ -25,16 +61,16 @@ export default function SessionEnd({ answers, bonusXp, explicationsOpenData, exp
       <div className="card" style={{ marginBottom: 14 }}>
         <div className="recap-stat">
           <div>
-            <b>+{earnedXp}</b>
+            <b>+{animatedXp}</b>
             <span>XP gagné</span>
           </div>
           <div>
-            <b>{accuracy}%</b>
-            <span>Précision</span>
+            <b>{todayAccuracy == null ? '—' : `${todayAccuracy}%`}</b>
+            <span>Précision du jour</span>
           </div>
           <div>
-            <b>{mistakes.length}</b>
-            <span>Erreurs</span>
+            <b>{streakCount}</b>
+            <span>Streak</span>
           </div>
         </div>
         {bonusXp > 0 && (
@@ -43,6 +79,12 @@ export default function SessionEnd({ answers, bonusXp, explicationsOpenData, exp
           </div>
         )}
       </div>
+
+      {masteryGained && (
+        <div className="mastery-gain">
+          {masteryGained.label} : {masteryGained.before}% → {masteryGained.after}% 📈
+        </div>
+      )}
 
       {mistakes.length > 0 && (
         <>

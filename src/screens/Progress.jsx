@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Icon } from '../components/Icons'
 import ProgressBar, { masteryColor } from '../components/ProgressBar'
 import {
@@ -5,6 +6,11 @@ import {
   getAllMastery,
   getAllMasteryBySpot,
   getPokerIQ,
+  getTrainingRank,
+  getOverallMastery,
+  getSessionsThisWeek,
+  getPseudo,
+  setPseudo,
   getTopMissedHands,
   getMonthCalendar,
 } from '../lib/storage'
@@ -17,6 +23,24 @@ export default function Progress() {
   const iq = getPokerIQ(state.history)
   const missed = getTopMissedHands(state.history, 5)
   const { days, monthLabel } = getMonthCalendar(state.streak.playedDates)
+  const [copyLabel, setCopyLabel] = useState('COPIER MES STATS')
+
+  function handleCopyStats() {
+    let pseudo = getPseudo()
+    if (!pseudo) {
+      const entered = window.prompt('Ton pseudo pour le partage ?')?.trim()
+      if (!entered) return
+      pseudo = entered
+      setPseudo(pseudo)
+    }
+    const rank = getTrainingRank(state.xp)
+    const overallMastery = getOverallMastery(state.history) ?? 0
+    const sessionsThisWeek = getSessionsThisWeek(state.sessionLog)
+    const text = `🃏 ${pseudo} — Streak ${state.streak.count} 🔥 | Rang ${rank.label} | Maîtrise ${overallMastery}% | ${sessionsThisWeek} sessions cette semaine`
+    navigator.clipboard.writeText(text)
+    setCopyLabel('COPIÉ !')
+    setTimeout(() => setCopyLabel('COPIER MES STATS'), 2000)
+  }
 
   return (
     <div className="screen with-nav">
@@ -77,7 +101,7 @@ export default function Progress() {
       </div>
 
       <h5>Top 5 des mains ratées</h5>
-      <div className="card">
+      <div className="card" style={{ marginBottom: 14 }}>
         {missed.length === 0 && (
           <small style={{ fontWeight: 800, color: 'var(--gray)' }}>
             Aucune erreur pour l'instant — continue comme ça !
@@ -90,6 +114,10 @@ export default function Progress() {
           </div>
         ))}
       </div>
+
+      <button type="button" className="btn ghost" onClick={handleCopyStats}>
+        {copyLabel}
+      </button>
     </div>
   )
 }

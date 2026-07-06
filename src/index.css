@@ -256,6 +256,33 @@ button {
   transition: width 0.4s ease;
 }
 
+@keyframes rank-up-pop {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.rank-up-banner {
+  background: linear-gradient(135deg, var(--yellow), var(--orange));
+  color: #7a5c00;
+  font-weight: 900;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 14px;
+  padding: 10px;
+  margin-bottom: 12px;
+  animation: rank-up-pop 0.4s ease-out;
+}
+
 .hero {
   background: linear-gradient(135deg, #58cc02, #2fb57c);
   border-radius: 22px;
@@ -594,6 +621,18 @@ button {
   line-height: 1.4;
   border-top: 1.5px solid #bee7ff;
   padding-top: 8px;
+}
+
+.mastery-gain {
+  background: #eefff0;
+  border: 2px solid #c7f0cd;
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--green-dark);
+  text-align: center;
 }
 
 .stat.sizing {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Drill from './Drill'
 import Feedback from './Feedback'
 import SessionEnd from './SessionEnd'
@@ -8,7 +8,17 @@ import explicationsOpenData from '../data/explications-mains-frontieres.json'
 import explicationsSpotsData from '../data/explications-spots-2-3.json'
 import equitesData from '../data/equites-preflop.json'
 import { generateNextQuestion } from '../lib/hands'
-import { loadState, addXp, recordAnswer, markPlayedToday, xpForAnswer, XP_PERFECT_BONUS } from '../lib/storage'
+import {
+  loadState,
+  addXp,
+  recordAnswer,
+  markPlayedToday,
+  recordSessionCompleted,
+  getSessionMasterySnapshot,
+  getTodayAccuracy,
+  xpForAnswer,
+  XP_PERFECT_BONUS,
+} from '../lib/storage'
 
 const SESSION_SIZE = 10
 
@@ -30,10 +40,8 @@ export default function Session({ config, onFinish }) {
   const [answers, setAnswers] = useState([])
   const [lastAnswer, setLastAnswer] = useState(null)
   const [bonusXp, setBonusXp] = useState(0)
-
-  useEffect(() => {
-    markPlayedToday()
-  }, [])
+  // Capturée une seule fois, avant toute réponse : sert de "avant" pour la progression de fin de session.
+  const [startMastery] = useState(() => getSessionMasterySnapshot(loadState().history, config))
 
   const question = questions[index]
 
@@ -69,14 +77,23 @@ export default function Session({ config, onFinish }) {
       addXp(XP_PERFECT_BONUS)
       setBonusXp(XP_PERFECT_BONUS)
     }
+    // "Objectif du jour" = une session complétée (pas juste commencée) : la streak et le compteur
+    // hebdomadaire ne bougent que si la session va jusqu'au bout.
+    markPlayedToday()
+    recordSessionCompleted()
     setPhase('end')
   }
 
   if (phase === 'end') {
+    const state = loadState()
     return (
       <SessionEnd
         answers={answers}
         bonusXp={bonusXp}
+        streakCount={state.streak.count}
+        todayAccuracy={getTodayAccuracy(state.history)}
+        startMastery={startMastery}
+        endMastery={getSessionMasterySnapshot(state.history, config)}
         explicationsOpenData={explicationsOpenData}
         explicationsSpotsData={explicationsSpotsData}
         onFinish={onFinish}
