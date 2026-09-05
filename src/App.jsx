@@ -3,8 +3,8 @@ import { IconSprite } from './components/Icons'
 import BottomNav from './components/BottomNav'
 import Home from './screens/Home'
 import Series from './screens/Series'
+import Charts from './screens/Charts'
 import Jargon from './screens/Jargon'
-import Placeholder from './screens/Placeholder'
 import Progress from './screens/Progress'
 import Session from './screens/Session'
 import { JargonNavigationProvider } from './lib/JargonNavigation'
@@ -46,13 +46,7 @@ export default function App() {
               <Home key={refreshTick} onPlay={() => startSession({ spot: null, group: null })} onNavigate={setTab} />
             )}
             {tab === 'series' && <Series key={`s${refreshTick}`} onStart={startSession} />}
-            {tab === 'charts' && (
-              <Placeholder
-                title="Charts"
-                text="Les tables d'ouverture consultables arrivent bientôt."
-                icon="cards"
-              />
-            )}
+            {tab === 'charts' && <Charts />}
             {tab === 'jargon' && <Jargon highlightTerm={jargonTermCore} />}
             {tab === 'progress' && <Progress key={`p${refreshTick}`} />}
             <BottomNav active={tab} onChange={setTab} />

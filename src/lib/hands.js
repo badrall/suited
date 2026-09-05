@@ -62,7 +62,7 @@ const SEAT_PHRASES = {
 }
 
 // Bascule un groupe d'ouverture vers le "bucket" utilisé par ranges-defense-bb-et-vs-3bet.json (vs_3bet).
-const VS3BET_BUCKET = { EP: 'open_EP_MP', MP: 'open_EP_MP', CO: 'open_CO_BTN', BTN: 'open_CO_BTN', SB: 'open_SB' }
+export const VS3BET_BUCKET = { EP: 'open_EP_MP', MP: 'open_EP_MP', CO: 'open_CO_BTN', BTN: 'open_CO_BTN', SB: 'open_SB' }
 
 /** Génère 2 cartes concrètes correspondant à une notation ("A9s" -> As 9s par ex). */
 export function cardsForNotation(notation) {
@@ -195,7 +195,8 @@ export function eligibleContexts(filter = {}) {
   return contexts
 }
 
-function getFrontierSet(spot, contextKey, rangesOpenData, rangesDefenseData) {
+/** Mains "frontières" pour un contexte donné (celles que le drill fait réviser en priorité). */
+export function getFrontierSet(spot, contextKey, rangesOpenData, rangesDefenseData) {
   if (spot === 'open') {
     const d = rangesOpenData.positions[contextKey]
     return new Set([...d.frontier_raise, ...d.frontier_fold])
