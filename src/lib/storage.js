@@ -29,6 +29,7 @@ function defaultState() {
     lastSeenRankIndex: 0,
     pseudo: null,
     sessionLog: [],
+    onboarding: { status: 'pending', completedAt: null, themeScores: null, totalScore: null, startingPokerIQ: null },
   }
 }
 
@@ -160,6 +161,34 @@ export function setPseudo(pseudo) {
   saveState(state)
 }
 
+// --- Test de positionnement (onboarding) --------------------------------------------
+// Le résultat n'est verrouillé (1×/mois) que s'il a déjà été COMPLÉTÉ pour de vrai — un simple
+// "passer" laisse le test entièrement disponible, à tout moment.
+
+const ONBOARDING_RETAKE_DELAY_MS = 30 * 24 * 60 * 60 * 1000
+
+export function canRetakeOnboarding(onboarding) {
+  return !onboarding.completedAt || Date.now() - onboarding.completedAt >= ONBOARDING_RETAKE_DELAY_MS
+}
+
+export function daysUntilOnboardingRetake(onboarding) {
+  if (canRetakeOnboarding(onboarding)) return 0
+  return Math.ceil((ONBOARDING_RETAKE_DELAY_MS - (Date.now() - onboarding.completedAt)) / 86400000)
+}
+
+/** L'utilisateur passe le test : pas de placement, départ = débutant, mais le test reste proposable. */
+export function skipOnboarding() {
+  const state = loadState()
+  state.onboarding.status = 'skipped'
+  saveState(state)
+}
+
+export function recordOnboardingResult({ themeScores, totalScore, startingPokerIQ }) {
+  const state = loadState()
+  state.onboarding = { status: 'done', completedAt: Date.now(), themeScores, totalScore, startingPokerIQ }
+  saveState(state)
+}
+
 function accuracy(entries) {
   if (!entries.length) return null
   const correct = entries.filter((e) => e.correct).length
@@ -229,9 +258,13 @@ const IQ_LEVELS = [
   { min: 92, label: 'Crusher' },
 ]
 
-/** Traduit une précision (%) en "Poker IQ" affiché sur l'accueil / progrès. */
-export function getPokerIQ(history) {
-  const score = getOverallMastery(history) ?? 0
+/**
+ * Traduit une précision (%) en "Poker IQ" affiché sur l'accueil / progrès.
+ * fallbackScore : utilisé tant qu'il n'y a pas encore de vraies données de jeu — le point de départ
+ * provisoire du test de positionnement (ou 0 si le test a été passé/non fait).
+ */
+export function getPokerIQ(history, fallbackScore = 0) {
+  const score = getOverallMastery(history) ?? fallbackScore
   let levelIndex = 0
   for (let i = 0; i < IQ_LEVELS.length; i++) {
     if (score >= IQ_LEVELS[i].min) levelIndex = i

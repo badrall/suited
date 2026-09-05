@@ -12,7 +12,7 @@ export default function Home({ onPlay, onNavigate }) {
   const state = loadState()
   const overall = getOverallMastery(state.history)
   const byPosition = getAllMastery(state.history)
-  const iq = getPokerIQ(state.history)
+  const iq = getPokerIQ(state.history, state.onboarding.startingPokerIQ ?? 0)
   const rank = getTrainingRank(state.xp)
   const doneToday = hasPlayedToday(state.streak)
 

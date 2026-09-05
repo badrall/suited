@@ -13,17 +13,20 @@ import {
   setPseudo,
   getTopMissedHands,
   getMonthCalendar,
+  canRetakeOnboarding,
+  daysUntilOnboardingRetake,
 } from '../lib/storage'
 import { ALL_HERO_GROUPS, SPOTS, SPOT_LABELS } from '../lib/hands'
 
-export default function Progress() {
+export default function Progress({ onRetakeOnboarding }) {
   const state = loadState()
   const mastery = getAllMastery(state.history)
   const masteryBySpot = getAllMasteryBySpot(state.history)
-  const iq = getPokerIQ(state.history)
+  const iq = getPokerIQ(state.history, state.onboarding.startingPokerIQ ?? 0)
   const missed = getTopMissedHands(state.history, 5)
   const { days, monthLabel } = getMonthCalendar(state.streak.playedDates)
   const [copyLabel, setCopyLabel] = useState('COPIER MES STATS')
+  const canRetake = canRetakeOnboarding(state.onboarding)
 
   function handleCopyStats() {
     let pseudo = getPseudo()
@@ -64,6 +67,35 @@ export default function Progress() {
           <div className="next">
             Prochain palier ({iq.next.threshold}) : <b>{iq.next.label}</b>
           </div>
+        )}
+      </div>
+
+      <h5>Test de positionnement</h5>
+      <div className="card" style={{ marginBottom: 14 }}>
+        {state.onboarding.status === 'done' ? (
+          <>
+            <small style={{ fontWeight: 800, color: 'var(--gray)' }}>
+              Point de départ (estimation provisoire) : <b style={{ color: 'var(--ink)' }}>{state.onboarding.startingPokerIQ}</b>
+            </small>
+            <button
+              type="button"
+              className="btn ghost"
+              style={{ marginTop: 10 }}
+              disabled={!canRetake}
+              onClick={onRetakeOnboarding}
+            >
+              {canRetake ? 'REFAIRE LE TEST' : `DISPONIBLE DANS ${daysUntilOnboardingRetake(state.onboarding)} J`}
+            </button>
+          </>
+        ) : (
+          <>
+            <small style={{ fontWeight: 800, color: 'var(--gray)' }}>
+              Fais le test de positionnement pour connaître ton point de départ.
+            </small>
+            <button type="button" className="btn ghost" style={{ marginTop: 10 }} onClick={onRetakeOnboarding}>
+              FAIRE LE TEST
+            </button>
+          </>
         )}
       </div>
 
