@@ -93,7 +93,7 @@ export default function Home({ onPlay, onNavigate }) {
         </small>
       </div>
 
-      <div className="card" style={{ marginBottom: 12 }}>
+      <div className="card" style={{ marginBottom: 14 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
           <b style={{ fontSize: 14 }}>Rang d'entraînement</b>
           <span style={{ fontWeight: 900, fontSize: 13, color: 'var(--orange)' }}>{rank.label}</span>
@@ -104,7 +104,7 @@ export default function Home({ onPlay, onNavigate }) {
         </small>
       </div>
 
-      <div className="card" style={{ marginBottom: 12 }}>
+      <div className="card" style={{ marginBottom: 14 }}>
         <div className="ringwrap">
           <MasteryRing percent={overall} />
           <div>
@@ -121,7 +121,7 @@ export default function Home({ onPlay, onNavigate }) {
         </div>
       </div>
 
-      <div className="card word-of-day" style={{ marginBottom: 12 }}>
+      <div className="card word-of-day" style={{ marginBottom: 14 }}>
         <b>
           <Icon name="bulb" style={{ width: 14, height: 14 }} /> LE MOT DU JOUR
         </b>

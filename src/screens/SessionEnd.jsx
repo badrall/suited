@@ -4,19 +4,31 @@ import JargonText from '../components/JargonText'
 import { getExplanation, seatPhrase } from '../lib/hands'
 
 // Compte de 0 jusqu'à target en ~700ms (easeOutCubic) — juste pour la satisfaction du chiffre qui monte.
+// Filet de sécurité : si requestAnimationFrame ne se déclenche pas (onglet en arrière-plan, économie
+// d'énergie...), un timeout force la valeur finale — sans ça l'XP peut rester bloqué à 0 affiché.
 function useCountUp(target, durationMs = 700) {
   const [value, setValue] = useState(0)
   useEffect(() => {
     let raf
+    let done = false
     const start = performance.now()
     function tick(now) {
+      if (done) return
       const t = Math.min(1, (now - start) / durationMs)
       const eased = 1 - (1 - t) ** 3
       setValue(Math.round(target * eased))
       if (t < 1) raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
+    const fallback = setTimeout(() => {
+      done = true
+      setValue(target)
+    }, durationMs + 80)
+    return () => {
+      done = true
+      cancelAnimationFrame(raf)
+      clearTimeout(fallback)
+    }
   }, [target, durationMs])
   return value
 }
@@ -48,7 +60,7 @@ export default function SessionEnd({
   return (
     <div className="screen">
       <div className="topbar">
-        <b style={{ fontSize: 17, fontWeight: 900 }}>Session terminée</b>
+        <b>Session terminée</b>
       </div>
 
       <div className="hero">

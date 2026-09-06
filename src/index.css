@@ -82,16 +82,31 @@ button {
   color: var(--ink);
 }
 
+@keyframes screen-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .screen {
   flex: 1;
   min-height: 0; /* laisse overflow-y:auto scroller au lieu de faire grandir .app-shell */
   display: flex;
   flex-direction: column;
-  padding: 18px 18px 0;
+  /* max(): sur un iPhone à encoche/Dynamic Island (viewport-fit=cover), le contenu ne passe jamais
+     sous la zone système ; sur les autres appareils, env() vaut 0 et ça revient au padding normal. */
+  padding: calc(18px + env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) 0
+    max(18px, env(safe-area-inset-left));
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
   z-index: 1;
+  animation: screen-fade-in 0.22s ease-out;
 }
 
 /* Écrans affichés avec le ruban bas (celui-ci est en position absolute, donc hors du flux) :
@@ -124,8 +139,9 @@ button {
   margin-bottom: 14px;
 }
 
-.topbar h1 {
-  font-size: 18px;
+.topbar b {
+  font-size: 17px;
+  font-weight: 900;
 }
 
 .chip {
@@ -176,6 +192,9 @@ button {
 .nav button.on {
   opacity: 1;
   color: var(--green-dark);
+}
+.nav button:active {
+  opacity: 0.6;
 }
 
 .nav .ico {
@@ -375,6 +394,9 @@ button {
 .mode.locked {
   opacity: 0.45;
   filter: grayscale(0.6);
+}
+.mode:active {
+  transform: translateY(2px);
 }
 
 .progress {
@@ -856,13 +878,17 @@ h5:first-child {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  min-height: 44px;
   font-weight: 900;
   font-size: 13.5px;
   background: none;
   border: none;
-  padding: 11px 0;
+  padding: 12px 0;
   color: var(--ink);
   text-align: left;
+}
+.cat .head:active {
+  opacity: 0.6;
 }
 .cat .count {
   color: var(--gray);
@@ -970,9 +996,13 @@ h5:first-child {
   color: var(--blue-dark);
   font-weight: 900;
   font-size: 12px;
-  padding: 0;
+  padding: 12px 6px;
+  margin: -12px -6px;
   cursor: pointer;
   display: inline-block;
+}
+.link:active {
+  opacity: 0.6;
 }
 
 /* ---------- Charts (matrice de ranges 13×13, lecture seule) ---------- */
@@ -990,6 +1020,7 @@ h5:first-child {
 }
 .chart-tab {
   flex: 1;
+  min-height: 44px;
   background: #fff;
   border: 2px solid var(--line);
   border-radius: 12px;
@@ -1004,6 +1035,10 @@ h5:first-child {
   border-color: var(--ink);
   color: #fff;
 }
+.chart-tab:active,
+.chart-pill:active {
+  opacity: 0.7;
+}
 
 .chart-pills {
   display: flex;
@@ -1015,7 +1050,10 @@ h5:first-child {
   background: #fff;
   border: 2px solid var(--line);
   border-radius: 999px;
-  padding: 6px 12px;
+  padding: 12px 14px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   font-weight: 900;
   font-size: 11px;
   color: var(--gray);
@@ -1074,6 +1112,9 @@ h5:first-child {
 }
 .range-selected {
   box-shadow: inset 0 0 0 2px var(--ink);
+}
+.range-cell:active {
+  opacity: 0.75;
 }
 
 .chart-legend {

@@ -6,7 +6,7 @@ export const ACTION_COLOR = {
   '3bet': 'var(--green)',
   '4bet': 'var(--green)',
   call: 'var(--blue)',
-  fold: '#E8E2D8',
+  fold: 'var(--line)',
 }
 const ACTION_TEXT_COLOR = { raise: '#fff', '3bet': '#fff', '4bet': '#fff', call: '#fff', fold: '#8a8272' }
 

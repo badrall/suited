@@ -3,11 +3,11 @@ import { loadState, getMasteryForPositionFilter, getMasteryBySpot } from '../lib
 import { SPOT_LABELS } from '../lib/hands'
 
 const POSITION_TILES = [
-  { key: 'EP', label: 'Focus EP', color: 'var(--blue)' },
-  { key: 'MP', label: 'Focus MP', color: 'var(--purple)' },
-  { key: 'CO', label: 'Focus CO', color: '#FF6DA3' },
-  { key: 'BTN', label: 'Focus BTN', color: 'var(--orange)' },
-  { key: 'Blinds', label: 'Focus Blinds', color: '#00C2B8' },
+  { key: 'EP', label: 'Focus EP', color: 'var(--blue)', glyph: '♠' },
+  { key: 'MP', label: 'Focus MP', color: 'var(--purple)', glyph: '♣' },
+  { key: 'CO', label: 'Focus CO', color: '#FF6DA3', glyph: '♦' },
+  { key: 'BTN', label: 'Focus BTN', color: 'var(--orange)', glyph: '◉' },
+  { key: 'Blinds', label: 'Focus Blinds', color: '#00C2B8', glyph: '♥' },
 ]
 
 const SITUATION_TILES = [
@@ -27,7 +27,7 @@ export default function Series({ onStart }) {
   return (
     <div className="screen with-nav">
       <div className="topbar">
-        <b style={{ fontSize: 17, fontWeight: 900 }}>Entraînement</b>
+        <b>Entraînement</b>
       </div>
 
       <h5>Le mix</h5>
@@ -62,7 +62,7 @@ export default function Series({ onStart }) {
             style={{ background: tile.color }}
             onClick={() => onStart({ spot: null, group: tile.key })}
           >
-            <i>♠</i>
+            <i>{tile.glyph}</i>
             <JargonText text={tile.label} />
             <small>{masteryLabel(getMasteryForPositionFilter(state.history, tile.key))}</small>
           </button>

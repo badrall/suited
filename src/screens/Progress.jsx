@@ -52,7 +52,7 @@ export default function Progress({ onRetakeOnboarding }) {
       </div>
 
       <div className="topbar">
-        <b style={{ fontSize: 17, fontWeight: 900 }}>Ton niveau</b>
+        <b>Ton niveau</b>
         <div className="chip fire">
           <Icon name="flame" />
           {state.streak.count}

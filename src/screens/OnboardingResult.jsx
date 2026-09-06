@@ -7,7 +7,7 @@ export default function OnboardingResult({ totalScore, themeScores, startingPoke
   return (
     <div className="screen">
       <div className="topbar">
-        <b style={{ fontSize: 17, fontWeight: 900 }}>Ton point de départ</b>
+        <b>Ton point de départ</b>
       </div>
 
       <div className="hero">

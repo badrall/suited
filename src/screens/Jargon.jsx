@@ -36,7 +36,7 @@ export default function Jargon({ highlightTerm }) {
   return (
     <div className="screen with-nav">
       <div className="topbar">
-        <b style={{ fontSize: 17, fontWeight: 900 }}>Le Jargon</b>
+        <b>Le Jargon</b>
       </div>
 
       <div className="search">
