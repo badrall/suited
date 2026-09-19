@@ -463,6 +463,25 @@ button {
   box-shadow: 0 0 0 4px rgba(28, 176, 246, 0.3);
 }
 
+/* Table cliquable (écran Séries, "Focus par position") : sièges agrandis pour rester ≥44px tappables. */
+.pos-table {
+  height: 26vh;
+  max-height: 220px;
+  min-height: 170px;
+  margin: 4px 6px 14px;
+}
+.pos-seat {
+  width: 44px;
+  height: 44px;
+  font-size: 10px;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+}
+.pos-seat:active {
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
 .pot {
   position: absolute;
   inset: 0;

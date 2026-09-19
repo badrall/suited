@@ -28,7 +28,7 @@ export const POSITION_LABELS = {
 export const SEATS_ORDER = ['UTG', 'UTG+1', 'UTG+2', 'LJ', 'HJ', 'CO', 'BTN', 'SB', 'BB']
 
 // Sièges concrets par groupe, pour l'affichage de la table 9-max.
-const SEATS_BY_GROUP = {
+export const SEATS_BY_GROUP = {
   EP: ['UTG', 'UTG+1', 'UTG+2'],
   MP: ['LJ', 'HJ'],
   CO: ['CO'],

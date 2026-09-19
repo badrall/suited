@@ -2,7 +2,8 @@
 
 import { SEATS_ORDER } from '../lib/hands'
 
-function seatPosition(index, total) {
+// Exportée pour être réutilisée par PositionPicker (même disposition ovale, sièges cliquables).
+export function seatPosition(index, total) {
   // Départ en haut, sens horaire, ellipse un peu aplatie pour ressembler à une table ovale.
   const angle = -Math.PI / 2 + (index * 2 * Math.PI) / total
   const rx = 44
