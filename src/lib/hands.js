@@ -1,6 +1,16 @@
 // Génération de mains, notation, sièges et lookups poker (169 combos, préflop 9-max).
 // Couvre 3 spots : open-raise, défense de BB, face à un 3-bet.
 
+// --- Réglages du tirage pondéré ---------------------------------------------------
+// En session CIBLÉE (Séries → Focus par position ou Par situation : config.group ou config.spot non
+// nul), on concentre bien plus le tirage sur les mains frontières et on raréfie encore plus les mains
+// triviales, pour éviter le sentiment "trop facile, fold" qu'un focus dilué dans les 169 mains donnait.
+// Le "Mix du jour" (aucun filtre) garde les poids d'origine, inchangés.
+export const FRONTIER_WEIGHT_MIX = 3 // poids d'une main frontière en mix (comportement d'origine)
+export const TRIVIAL_WEIGHT_MIX = 0.25 // poids d'une main triviale en mix (comportement d'origine)
+export const FRONTIER_BOOST_FOCUS = 2.0 // multiplie le poids frontière en focus (3 × 2 = 6)
+export const TRIVIAL_WEIGHT_FOCUS = 0.1 // remplace (ne multiplie pas) le poids trivial en focus
+
 export const RANKS = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2']
 export const SUITS = ['♠', '♥', '♦', '♣']
 export const RED_SUITS = new Set(['♥', '♦'])
@@ -148,10 +158,14 @@ function isTrivial(notation) {
   return false
 }
 
-/** Poids de tirage d'une notation : ~3x plus pour les mains frontières, réduit pour les mains triviales. */
-export function weightFor(notation, frontierSet) {
-  if (frontierSet.has(notation)) return 3
-  if (isTrivial(notation)) return 0.25
+/**
+ * Poids de tirage d'une notation, pour les mains frontières et triviales (les autres valent 1).
+ * focus : true dans une session ciblée (Séries → Focus par position/situation) — voir les réglages
+ * en haut du module. false (défaut) = comportement "Mix du jour", inchangé.
+ */
+export function weightFor(notation, frontierSet, focus = false) {
+  if (frontierSet.has(notation)) return focus ? FRONTIER_WEIGHT_MIX * FRONTIER_BOOST_FOCUS : FRONTIER_WEIGHT_MIX
+  if (isTrivial(notation)) return focus ? TRIVIAL_WEIGHT_FOCUS : TRIVIAL_WEIGHT_MIX
   return 1
 }
 
@@ -366,6 +380,9 @@ function assembleQuestion(spot, group, contextKey, notation, rangesOpenData, ran
  * pour éviter un import circulaire avec storage.js).
  */
 export function generateNextQuestion(config, srsMap, totalAnswered, rangesOpenData, rangesDefenseData) {
+  // Session ciblée dès qu'un filtre est actif (position OU situation) ; "Mix du jour" = {spot:null,group:null}.
+  const focus = !!(config?.group || config?.spot)
+
   let contexts = eligibleContexts(config)
   if (contexts.length === 0) contexts = eligibleContexts({}) // filet de sécurité si le filtre est dégénéré
 
@@ -382,6 +399,6 @@ export function generateNextQuestion(config, srsMap, totalAnswered, rangesOpenDa
   const ctx = contexts[Math.floor(Math.random() * contexts.length)]
   const frontierSet = getFrontierSet(ctx.spot, ctx.contextKey, rangesOpenData, rangesDefenseData)
   const pool = candidatePool(ctx.spot, ctx.contextKey, rangesOpenData, rangesDefenseData)
-  const notation = weightedChoice(pool, (n) => weightFor(n, frontierSet))
+  const notation = weightedChoice(pool, (n) => weightFor(n, frontierSet, focus))
   return assembleQuestion(ctx.spot, ctx.group, ctx.contextKey, notation, rangesOpenData, rangesDefenseData)
 }

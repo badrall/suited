@@ -57,4 +57,25 @@ describe('weightedChoice (distribution statistique)', () => {
     expect(counts.a).toBeGreaterThan(700)
     expect(counts.b).toBeGreaterThan(700)
   })
+
+  it('en session ciblée (focus), tire une main frontière nettement plus souvent qu\'en mix', () => {
+    const frontier = new Set(['A9s'])
+    // 1 frontière, 2 triviales (72o, 62o), 8 normales (poids 1) — composition fixe pour un ratio stable.
+    const pool = ['A9s', '72o', '62o', '87s', 'KQo', 'JTs', 'T9s', 'Q8o', 'J7o', '54s', 'QJo']
+    const N = 30000
+
+    function frontierShare(focus) {
+      let hits = 0
+      for (let i = 0; i < N; i++) {
+        if (weightedChoice(pool, (n) => weightFor(n, frontier, focus)) === 'A9s') hits += 1
+      }
+      return hits / N
+    }
+
+    const mixShare = frontierShare(false)
+    const focusShare = frontierShare(true)
+
+    // Poids théoriques : mix = 3/11.5 ≈ 0.26, focus = 6/14.2 ≈ 0.42 (ratio ≈1.6) — marge large anti-flake.
+    expect(focusShare).toBeGreaterThan(mixShare * 1.3)
+  })
 })
