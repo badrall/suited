@@ -727,6 +727,70 @@ button {
   opacity: 0.92;
   line-height: 1.4;
 }
+.iqcard .bar {
+  margin-top: 10px;
+}
+
+/* ---------- Estimateur de niveau réel (préflop) ---------- */
+
+.level-progress-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.level-detail {
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-top: 12px;
+  opacity: 0.95;
+}
+.level-detail b {
+  font-weight: 900;
+}
+
+.level-blocker {
+  background: #fff3e0;
+  border: 2px solid #ffcc80;
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+.level-blocker b {
+  color: #8a4b00;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.level-blocker p {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6d5b1e;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.level-reliability-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.level-caveat {
+  display: block;
+  margin-top: 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--gray);
+  line-height: 1.4;
+}
 
 .pos {
   display: flex;

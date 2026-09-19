@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Icon } from '../components/Icons'
 import ProgressBar, { masteryColor } from '../components/ProgressBar'
+import LevelCard from '../components/LevelCard'
 import {
   loadState,
   getAllMastery,
   getAllMasteryBySpot,
-  getPokerIQ,
   getTrainingRank,
   getOverallMastery,
   getSessionsThisWeek,
@@ -16,13 +16,14 @@ import {
   canRetakeOnboarding,
   daysUntilOnboardingRetake,
 } from '../lib/storage'
+import { estimateLevel } from '../lib/levelEstimator'
 import { ALL_HERO_GROUPS, SPOTS, SPOT_LABELS } from '../lib/hands'
 
 export default function Progress({ onRetakeOnboarding }) {
   const state = loadState()
   const mastery = getAllMastery(state.history)
   const masteryBySpot = getAllMasteryBySpot(state.history)
-  const iq = getPokerIQ(state.history, state.onboarding.startingPokerIQ ?? 0)
+  const level = estimateLevel(state.history)
   const missed = getTopMissedHands(state.history, 5)
   const { days, monthLabel } = getMonthCalendar(state.streak.playedDates)
   const [copyLabel, setCopyLabel] = useState('COPIER MES STATS')
@@ -59,16 +60,7 @@ export default function Progress({ onRetakeOnboarding }) {
         </div>
       </div>
 
-      <div className="iqcard">
-        <div className="label">POKER IQ · PRÉFLOP</div>
-        <div className="score">{iq.score}</div>
-        <div className="lvl">{iq.level}</div>
-        {iq.next && (
-          <div className="next">
-            Prochain palier ({iq.next.threshold}) : <b>{iq.next.label}</b>
-          </div>
-        )}
-      </div>
+      <LevelCard level={level} onboardingStartingIQ={state.onboarding.startingPokerIQ} />
 
       <h5>Test de positionnement</h5>
       <div className="card" style={{ marginBottom: 14 }}>

@@ -14,6 +14,7 @@ App d'entraînement poker préflop (« le Duolingo du poker »). React 19 + Vite
 - **Bouton CALL (limp) conservé en open-raise** (`buttonsForSpot`, `Drill`, `Feedback`) : CALL n'est jamais la bonne réponse en open-raise, mais on le laisse volontairement pour que le débutant puisse tester le limp et apprendre via le feedback dédié. Ne pas retirer ce bouton.
 - **Place du ruban réservée sur tous les écrans** (`src/index.css`) : règle `.app-shell:has(> .nav) .screen { padding-bottom … }`. Corrige un contenu inatteignable sous le ruban fixe. Ne pas remplacer par un padding conditionnel qui oublierait certains écrans.
 - **Tirage des mains restreint par spot** (`candidatePool` dans `src/lib/hands.js`) : en `bb_defense` et `vs_3bet`, on ne tire QUE dans les mains réellement en jeu (listées dans le JSON : continues + folds frontières), pas dans les 169 combos. En `vs_3bet` c'est indispensable : on n'atteint ce spot que si on a ouvert — tirer dans les 169 présentait des mains jamais ouvertes (fold absurde). L'`open` reste sur les 169 combos (volontaire).
+- **`getPokerIQ`/`IQ_LEVELS` conservés dans `storage.js`** malgré l'estimateur de niveau réel (`src/lib/levelEstimator.js`, page 2.8) : l'écran Progrès affiche désormais ce dernier (palier ancré au réel, maillon faible, fiabilité), mais `getPokerIQ` reste le chip "IQ" de l'Accueil (gamification legère, distincte de l'estimateur). Ce n'est PAS du code mort à supprimer.
 
 ## Conventions
 
