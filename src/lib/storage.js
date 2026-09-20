@@ -29,6 +29,7 @@ function defaultState() {
     lastSeenRankIndex: 0,
     pseudo: null,
     sessionLog: [],
+    lastTestQuestionIds: [],
     onboarding: { status: 'pending', completedAt: null, themeScores: null, totalScore: null, startingPokerIQ: null },
   }
 }
@@ -186,6 +187,17 @@ export function skipOnboarding() {
 export function recordOnboardingResult({ themeScores, totalScore, startingPokerIQ }) {
   const state = loadState()
   state.onboarding = { status: 'done', completedAt: Date.now(), themeScores, totalScore, startingPokerIQ }
+  saveState(state)
+}
+
+/** Ids des questions servies au dernier test de positionnement (anti-répétition au test suivant). */
+export function getLastTestQuestionIds() {
+  return loadState().lastTestQuestionIds ?? []
+}
+
+export function setLastTestQuestionIds(ids) {
+  const state = loadState()
+  state.lastTestQuestionIds = ids
   saveState(state)
 }
 

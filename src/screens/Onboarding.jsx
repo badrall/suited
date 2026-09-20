@@ -3,8 +3,8 @@ import OnboardingIntro from './OnboardingIntro'
 import OnboardingQuestion from './OnboardingQuestion'
 import OnboardingFeedback from './OnboardingFeedback'
 import OnboardingResult from './OnboardingResult'
-import { ONBOARDING_QUESTIONS, computeThemeScores, scoreToStartingPokerIQ } from '../lib/onboarding'
-import { skipOnboarding, recordOnboardingResult } from '../lib/storage'
+import { drawTestQuestions, computeThemeScores, scoreToStartingPokerIQ } from '../lib/onboarding'
+import { skipOnboarding, recordOnboardingResult, getLastTestQuestionIds, setLastTestQuestionIds } from '../lib/storage'
 
 /**
  * Test de positionnement : 20 QCM, un par un, feedback immédiat, puis restitution.
@@ -18,20 +18,27 @@ export default function Onboarding({ onFinish }) {
   const [lastCorrect, setLastCorrect] = useState(false)
   const [result, setResult] = useState(null)
 
-  const total = ONBOARDING_QUESTIONS.length
+  // Tirage fait une fois au montage (aucun effet de bord ici : les ids ne sont mémorisés qu'au démarrage réel du test).
+  const [questions] = useState(() => drawTestQuestions({ previousIds: getLastTestQuestionIds() }))
+  const total = questions.length
+
+  function handleStart() {
+    setLastTestQuestionIds(questions.map((q) => q.id))
+    setPhase('question')
+  }
 
   // Ne se déclenche qu'une fois, au passage réel en phase "result" (pas au montage) : pas de risque
   // de double-écriture sous React StrictMode, qui ne double-invoque que les effets de montage.
   useEffect(() => {
     if (phase !== 'result') return
-    const themeScores = computeThemeScores(answers)
+    const themeScores = computeThemeScores(questions, answers)
     const totalScore = answers.filter((a) => a?.correct).length
     const startingPokerIQ = scoreToStartingPokerIQ(totalScore)
     recordOnboardingResult({ themeScores, totalScore, startingPokerIQ })
     setResult({ themeScores, totalScore, startingPokerIQ })
     // "answers" est bien lu ici, mais le guard ci-dessus rend l'effet sans effet tant que phase !== 'result' :
     // il se déclenche donc réellement une seule fois, exactement au passage en phase "result".
-  }, [phase, answers])
+  }, [phase, answers, questions])
 
   function handleSkip() {
     skipOnboarding()
@@ -39,7 +46,7 @@ export default function Onboarding({ onFinish }) {
   }
 
   function handleAnswer(optionIndex) {
-    const question = ONBOARDING_QUESTIONS[index]
+    const question = questions[index]
     const correct = optionIndex === question.reponse
     setAnswers((prev) => {
       const next = [...prev]
@@ -60,7 +67,7 @@ export default function Onboarding({ onFinish }) {
   }
 
   if (phase === 'intro') {
-    return <OnboardingIntro onStart={() => setPhase('question')} onSkip={handleSkip} />
+    return <OnboardingIntro onStart={handleStart} onSkip={handleSkip} />
   }
 
   if (phase === 'result') {
@@ -75,7 +82,7 @@ export default function Onboarding({ onFinish }) {
     )
   }
 
-  const question = ONBOARDING_QUESTIONS[index]
+  const question = questions[index]
 
   if (phase === 'feedback') {
     return <OnboardingFeedback question={question} correct={lastCorrect} isLast={index + 1 === total} onNext={handleNext} />
