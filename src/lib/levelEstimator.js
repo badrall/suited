@@ -77,8 +77,13 @@ function weightedAccuracy(entries) {
   let correct = 0
   let total = 0
   for (const entry of entries) {
-    const frontierSet = getFrontierSet(entry.spot, entry.contextKey, rangesOpenData, rangesDefenseData)
-    const weight = frontierSet.has(entry.notation) ? FRONTIER_ACCURACY_WEIGHT : 1
+    // Garde défensive : les entrées "legacy" (tout premier drill, avant l'ajout des spots) n'ont ni
+    // spot ni contextKey valides → poids neutre, pas de lookup frontière (évite un crash de l'estimateur).
+    let weight = 1
+    if (SPOTS.includes(entry.spot) && entry.contextKey) {
+      const frontierSet = getFrontierSet(entry.spot, entry.contextKey, rangesOpenData, rangesDefenseData)
+      if (frontierSet.has(entry.notation)) weight = FRONTIER_ACCURACY_WEIGHT
+    }
     total += weight
     if (entry.correct) correct += weight
   }
