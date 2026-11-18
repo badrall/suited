@@ -33,6 +33,7 @@ export function IconSprite() {
       <symbol id="i-nav-charts" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M9 3v18" /></symbol>
       <symbol id="i-nav-jargon" viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14M4 19h16M8 8h8M8 12h5" /></symbol>
       <symbol id="i-nav-progress" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="M14.7 4.3 7 12l7.7 7.7 1.4-1.4L9.8 12l6.3-6.3z" /></symbol>
       <symbol id="i-lock" viewBox="0 0 24 24"><path d="M6 10V8a6 6 0 0 1 12 0v2h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1zm2 0h8V8a4 4 0 0 0-8 0z" /></symbol>
     </svg>
   )
