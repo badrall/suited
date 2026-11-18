@@ -25,6 +25,8 @@ App d'entraînement poker préflop (« le Duolingo du poker »). React 19 + Vite
 
 - **Accueil épuré (3.20)** (`Home.jsx`, maquette `reference/accueil-hifi.html`) : exactement logo + `StreakWeek` + héros « Session du jour » (« 10 mains · 3 min », 2 cartes décoratives, JOUER) + mot du jour (tap = ouvre le terme dans Le Jargon). Volontairement supprimés : chips IQ/XP/rang, objectif du jour, anneau de maîtrise, bannière de rang, boutons Séries/Charts/rappel (redondants avec le ruban). Le rappel 19h déjà autorisé reste planifié, mais le bouton d'activation est sur l'écran Progrès. Ne pas réintroduire ces blocs sans demande.
 
+- **Navigation à 2 niveaux sur Séries et Charts** : l'entrée de l'onglet affiche de grandes boxes (`.series-box`), un tap ouvre le niveau 2 avec `BackHeader` (composant partagé, flèche retour). Charts : « Consultation » / « Quiz » REMPLACENT l'ancien toggle en haut de la matrice (ne pas le remettre). En quiz, la case interrogée utilise `selected` de `RangeMatrix` (état sélectionné net) et `frontierSet` est vide (le liseré frontière n'existe qu'en consultation). Jargon : catégories en cartes (`--cat` = couleur de catégorie), logique de recherche/tooltips inchangée.
+
 ## Conventions
 
 - Ranges live (casino/cercle) 9-max 100bb, légèrement plus tight que le GTO online. Action par défaut : fold.

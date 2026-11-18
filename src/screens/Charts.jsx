@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Icon } from '../components/Icons'
+import BackHeader from '../components/BackHeader'
+import ProgressBar from '../components/ProgressBar'
 import RangeMatrix, { ACTION_COLOR } from '../components/RangeMatrix'
 import rangesOpenData from '../data/ranges-open-raise-9max-live.json'
 import rangesDefenseData from '../data/ranges-defense-bb-et-vs-3bet.json'
@@ -32,15 +34,66 @@ const LEGEND_BY_SPOT = {
 }
 
 const QUIZ_LENGTH = 15
+const EMPTY_SET = new Set()
 
 function drawQuizQueue(spot, contextKey) {
   const pool = candidatePool(spot, contextKey, rangesOpenData, rangesDefenseData)
   return Array.from({ length: QUIZ_LENGTH }, () => pool[Math.floor(Math.random() * pool.length)])
 }
 
-/** Écran Charts : consultation en lecture seule (169 mains colorées) + mode Quiz (surlignage aléatoire, réponse via les boutons du drill). */
+// Visuels des 2 grandes boxes d'entrée (SVG, mêmes couleurs d'action que la matrice).
+const MINI_GRID_PATTERN = [
+  'GGGGBRRR',
+  'GGGBRRRR',
+  'GGBRRRRR',
+  'GBRRRRRR',
+  'BRRRRRRR',
+  'RRRRRRRR',
+]
+const MINI_COLORS = { G: 'var(--green)', B: 'var(--blue)', R: 'var(--red)' }
+
+function ConsultVisual() {
+  return (
+    <svg viewBox="0 0 94 70" className="sb-visual" aria-hidden="true">
+      {MINI_GRID_PATTERN.flatMap((row, r) =>
+        [...row].map((c, i) => (
+          <rect key={`${r}-${i}`} x={i * 12} y={r * 12} width="10" height="10" rx="2.5" fill={MINI_COLORS[c]} />
+        )),
+      )}
+    </svg>
+  )
+}
+
+function QuizVisual() {
+  return (
+    <svg viewBox="0 0 94 70" className="sb-visual" aria-hidden="true">
+      {MINI_GRID_PATTERN.flatMap((row, r) =>
+        [...row].map((_, i) => (
+          <rect
+            key={`${r}-${i}`}
+            x={i * 12}
+            y={r * 12}
+            width="10"
+            height="10"
+            rx="2.5"
+            fill="rgba(255,255,255,0.12)"
+          />
+        )),
+      )}
+      <rect x="48" y="24" width="10" height="10" rx="2.5" fill="rgba(255,255,255,0.12)" stroke="#e0a655" strokeWidth="2" />
+      <text x="53" y="32" textAnchor="middle" fontSize="9" fontWeight="800" fill="#e0a655">
+        ?
+      </text>
+    </svg>
+  )
+}
+
+/**
+ * Écran Charts, navigation à 2 niveaux : choix du mode (2 grandes boxes), puis la matrice en
+ * Consultation (lecture seule, 169 mains colorées) ou en Quiz (case surlignée au hasard, réponse via les boutons du drill).
+ */
 export default function Charts() {
-  const [mode, setMode] = useState('consult')
+  const [mode, setMode] = useState(null) // null = choix du mode | 'consult' | 'quiz'
   const [spot, setSpot] = useState('open')
   const [contextKey, setContextKey] = useState(CONTEXTS_BY_SPOT.open[0].key)
   const [selected, setSelected] = useState(null)
@@ -59,8 +112,9 @@ export default function Charts() {
     setQuizDone(false)
   }
 
-  function handleModeChange(nextMode) {
+  function enterMode(nextMode) {
     setMode(nextMode)
+    setSelected(null)
     if (nextMode === 'quiz') startQuiz()
   }
 
@@ -106,25 +160,44 @@ export default function Charts() {
     setQuizAnswer(null)
   }
 
+  if (mode === null) {
+    return (
+      <div className="screen with-nav">
+        <div className="topbar">
+          <b>Charts</b>
+        </div>
+        <p className="series-intro">Les ranges de référence, pour les consulter ou les apprendre.</p>
+
+        <button type="button" className="series-box" onClick={() => enterMode('consult')}>
+          <span className="sb-text">
+            <span className="sb-title">Consultation</span>
+            <span className="sb-sub">Explore la matrice des 169 mains : ouvrir, défendre, répondre à un 3-bet. Tape une main pour voir l'action.</span>
+          </span>
+          <ConsultVisual />
+        </button>
+
+        <button type="button" className="series-box" onClick={() => enterMode('quiz')}>
+          <span className="sb-text">
+            <span className="sb-title">Quiz</span>
+            <span className="sb-sub">15 mains surlignées au hasard : tu choisis l'action, la matrice te corrige.</span>
+          </span>
+          <QuizVisual />
+        </button>
+      </div>
+    )
+  }
+
   const frontierSet = getFrontierSet(spot, contextKey, rangesOpenData, rangesDefenseData)
   const vpip = spot === 'open' ? rangesOpenData.positions[contextKey].vpip_approx : null
   const buttons = buttonsForSpot(spot)
 
   return (
     <div className="screen with-nav">
-      <div className="topbar">
-        <b>Charts</b>
-        {mode === 'consult' && vpip && <span className="chart-vpip">VPIP ~{vpip}</span>}
-      </div>
-
-      <div className="chart-tabs">
-        <button type="button" className={`chart-tab${mode === 'consult' ? ' on' : ''}`} onClick={() => handleModeChange('consult')}>
-          CONSULTATION
-        </button>
-        <button type="button" className={`chart-tab${mode === 'quiz' ? ' on' : ''}`} onClick={() => handleModeChange('quiz')}>
-          QUIZ
-        </button>
-      </div>
+      <BackHeader
+        title={mode === 'consult' ? 'Consultation' : 'Quiz'}
+        onBack={() => setMode(null)}
+        right={mode === 'consult' && vpip ? <span className="chart-vpip subnav-right">VPIP ~{vpip}</span> : null}
+      />
 
       <div className="chart-tabs">
         {SPOTS.map((s) => (
@@ -177,8 +250,11 @@ export default function Charts() {
           <div className="chart-selection">
             {selected ? (
               <>
-                <b>{selected}</b> → {ACTION_LABEL[getAction(selected)]}
-                {frontierSet.has(selected) && ' · main frontière (priorité du drill)'}
+                <b>{selected}</b>
+                <span className="sel-action" style={{ background: ACTION_COLOR[getAction(selected)] }}>
+                  {ACTION_LABEL[getAction(selected)]}
+                </span>
+                {frontierSet.has(selected) && <small>main frontière (priorité du drill)</small>}
               </>
             ) : (
               <span style={{ color: 'var(--text-muted)' }}>Tape une case pour voir la main et l'action.</span>
@@ -186,7 +262,7 @@ export default function Charts() {
           </div>
         </>
       ) : quizDone ? (
-        <div className="card quiz-recap">
+        <div className="card light quiz-recap">
           <div className="quiz-recap-score">
             {quizScore}/{QUIZ_LENGTH}
           </div>
@@ -194,19 +270,20 @@ export default function Charts() {
           <button type="button" className="btn g" onClick={() => startQuiz()}>
             REJOUER
           </button>
+          <button type="button" className="btn ghost" onClick={() => setMode(null)}>
+            RETOUR AUX CHARTS
+          </button>
         </div>
       ) : (
         <>
           <div className="chart-quiz-progress">
-            Main {quizIndex + 1}/{QUIZ_LENGTH} · Score {quizScore}
+            <ProgressBar percent={((quizIndex + (quizAnswer ? 1 : 0)) / QUIZ_LENGTH) * 100} />
+            <span>
+              Main {quizIndex + 1}/{QUIZ_LENGTH} · Score {quizScore}
+            </span>
           </div>
 
-          <RangeMatrix
-            getAction={getQuizCellAction}
-            frontierSet={new Set([quizNotation])}
-            selected={null}
-            onCellTap={() => {}}
-          />
+          <RangeMatrix getAction={getQuizCellAction} frontierSet={EMPTY_SET} selected={quizNotation} onCellTap={() => {}} />
 
           {quizAnswer && (
             <div className={`fb${quizAnswer.correct ? ' correct' : ''}`}>

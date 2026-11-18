@@ -1269,53 +1269,84 @@ h5:first-child {
 .search {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  gap: 10px;
+  min-height: 48px;
+  background: var(--surface);
   border: 1px solid var(--line-strong);
   border-radius: 999px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
+  padding: 0 18px;
+  margin-bottom: 18px;
   color: var(--text-muted);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.search:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(224, 166, 85, 0.2);
+  color: var(--gold);
 }
 .search input {
   border: none;
   outline: none;
   flex: 1;
-  font-weight: 700;
-  font-size: 13px;
+  min-width: 0;
+  font-weight: 600;
+  font-size: 14px;
   font-family: inherit;
   color: var(--text);
   background: none;
 }
 .search input::placeholder {
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .cat {
+  --cat: var(--gold);
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r-card);
   background: linear-gradient(180deg, var(--surface-2), #132840);
-  padding: 2px 14px;
-  margin-bottom: 8px;
-  border-left-width: 6px;
+  padding: 4px 14px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-card);
+}
+.cat.open {
+  border-color: color-mix(in srgb, var(--cat) 35%, transparent);
 }
 .cat .head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
   width: 100%;
-  min-height: 44px;
-  font-weight: 800;
-  font-size: 13.5px;
+  min-height: 60px;
   background: none;
   border: none;
-  padding: 12px 0;
+  padding: 10px 0;
   color: var(--text);
   text-align: left;
 }
 .cat .head:active {
   opacity: 0.6;
+}
+.cat-badge {
+  flex: 0 0 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cat);
+  background: color-mix(in srgb, var(--cat) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cat) 35%, transparent);
+}
+.cat-name {
+  flex: 1;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.15;
+  letter-spacing: -0.1px;
 }
 .cat .count {
   color: var(--text-muted);
@@ -1325,22 +1356,64 @@ h5:first-child {
   border-radius: 999px;
   padding: 2px 9px;
 }
+.cat .chev {
+  color: var(--text-muted);
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+}
+.cat.open .chev {
+  transform: rotate(270deg);
+  color: var(--cat);
+}
+.cat .terms {
+  padding-bottom: 6px;
+}
 .cat .term {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   border-top: 1px solid var(--line);
-  padding: 9px 0;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--text-soft);
-  line-height: 1.4;
+  padding: 12px 0;
 }
 .cat .term b {
+  font-size: 14px;
+  font-weight: 800;
   color: var(--text);
+}
+.cat .term span {
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--text-muted);
 }
 .cat .term.term-highlight {
   background: rgba(224, 166, 85, 0.14);
   margin: 0 -14px;
-  padding: 9px 14px;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+}
+
+.jargon-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-card);
+}
+.jargon-empty b {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+.jargon-empty span {
+  font-size: 12.5px;
+  font-weight: 500;
 }
 
 /* ---------- Tooltips de jargon (partout où du texte pédagogique s'affiche) ---------- */
@@ -1415,51 +1488,71 @@ h5:first-child {
   font-weight: 700;
   color: var(--text-muted);
 }
+.subnav-right {
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
 
+/* Onglets de spot : contrôle segmenté, actif en crème. */
 .chart-tabs {
   display: flex;
-  gap: 6px;
-  margin-bottom: 10px;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  border-radius: 14px;
 }
 .chart-tab {
   flex: 1;
-  min-height: 44px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--line-strong);
-  border-radius: 12px;
+  min-height: 40px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
   padding: 8px 4px;
   font-weight: 800;
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--text-muted);
   text-align: center;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 .chart-tab.on {
   background: var(--cream);
-  border-color: var(--cream);
   color: var(--ink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 .chart-tab:active,
 .chart-pill:active {
   opacity: 0.7;
 }
 
+/* Pilules de contexte (position / adversaire) : actif en or. */
 .chart-pills {
   display: flex;
-  gap: 6px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 14px;
   flex-wrap: wrap;
 }
 .chart-pill {
-  background: rgba(255, 255, 255, 0.04);
+  background: transparent;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
-  padding: 12px 14px;
+  padding: 0 16px;
   min-height: 44px;
+  min-width: 52px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   font-weight: 800;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 .chart-pill.on {
   background: var(--gold);
@@ -1471,7 +1564,11 @@ h5:first-child {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  padding: 8px 6px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--line);
+  border-radius: 16px;
 }
 .range-row {
   display: flex;
@@ -1500,22 +1597,34 @@ h5:first-child {
   justify-content: center;
 }
 .range-cell {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: 3px;
-  font-size: 7px;
-  font-weight: 800;
+  border-radius: 4px;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
   padding: 0;
   line-height: 1;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.12s ease;
 }
+/* Main frontière : simple liseré doré discret. */
 .range-frontier {
-  box-shadow: inset 0 0 0 2px var(--gold);
+  box-shadow: inset 0 0 0 1.5px rgba(224, 166, 85, 0.95);
 }
+/* Case sélectionnée (consultation) ou case interrogée (quiz) : ressort nettement. */
 .range-selected {
-  box-shadow: inset 0 0 0 2px var(--cream);
+  z-index: 1;
+  transform: scale(1.22);
+  border-radius: 5px;
+  box-shadow:
+    inset 0 0 0 2px var(--cream),
+    0 3px 10px rgba(0, 0, 0, 0.55);
 }
 .range-cell:active {
   opacity: 0.75;
@@ -1524,16 +1633,19 @@ h5:first-child {
 .chart-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 .chart-legend-item {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-size: 10.5px;
   font-weight: 700;
   color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  padding: 5px 10px;
 }
 .chart-legend-swatch {
   width: 12px;
@@ -1543,46 +1655,81 @@ h5:first-child {
 }
 .chart-legend-swatch.chart-legend-frontier {
   background: transparent;
-  box-shadow: inset 0 0 0 2px var(--gold);
+  box-shadow: inset 0 0 0 1.5px var(--gold);
 }
 
 .chart-selection {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--line-strong);
-  border-radius: 14px;
-  padding: 10px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 60px;
+  background: linear-gradient(180deg, var(--surface-2), #132840);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 12px 14px;
   font-size: 13px;
   font-weight: 700;
   text-align: center;
+  box-shadow: var(--shadow-card);
 }
 .chart-selection b {
-  font-size: 15px;
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 600;
   color: var(--cream);
+}
+.sel-action {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+.chart-selection small {
+  flex-basis: 100%;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold-l);
 }
 
 .chart-quiz-progress {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.chart-quiz-progress .bar {
+  width: 100%;
+}
+.chart-quiz-progress span {
   font-size: 12px;
   font-weight: 800;
   color: var(--text-muted);
-  margin-bottom: 10px;
 }
 
 .quiz-recap {
   text-align: center;
-  padding: 28px 14px;
+  padding: 28px 18px;
 }
 .quiz-recap-score {
   font-family: var(--font-title);
-  font-size: 44px;
+  font-size: 52px;
   font-weight: 600;
-  color: var(--cream);
+  line-height: 1;
+  color: var(--ink);
 }
 .quiz-recap p {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text-muted);
-  margin: 4px 0 16px;
+  color: var(--ink-muted);
+  margin: 6px 0 18px;
+}
+.quiz-recap .btn.ghost {
+  margin-top: 14px;
 }
 
 /* ---------- Onboarding (test de positionnement) ---------- */

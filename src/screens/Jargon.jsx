@@ -11,6 +11,15 @@ const CATEGORY_COLORS = {
   tournois: 'var(--teal)',
 }
 
+const CATEGORY_ICONS = {
+  bases: 'bulb',
+  actions: 'target',
+  positions: 'cards',
+  mains: 'spade',
+  metajeu: 'brain',
+  tournois: 'star',
+}
+
 /** Écran "Le Jargon" : 6 catégories en accordéons + recherche en temps réel (nom et définition). */
 export default function Jargon({ highlightTerm }) {
   const target = highlightTerm ? findTermByCore(highlightTerm) : null
@@ -38,40 +47,58 @@ export default function Jargon({ highlightTerm }) {
       <div className="topbar">
         <b>Le Jargon</b>
       </div>
+      <p className="series-intro">Le vocabulaire du poker, expliqué simplement.</p>
 
       <div className="search">
-        <Icon name="search" style={{ width: 16, height: 16 }} />
-        <input type="text" placeholder="Chercher un terme…" value={query} onChange={(e) => setQuery(e.target.value)} />
+        <Icon name="search" style={{ width: 18, height: 18 }} />
+        <input
+          type="text"
+          placeholder="Chercher un terme…"
+          aria-label="Chercher un terme"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
       </div>
 
       {filteredCategories.length === 0 && (
-        <small style={{ fontWeight: 800, color: 'var(--text-muted)' }}>Aucun terme ne correspond à ta recherche.</small>
+        <div className="jargon-empty">
+          <Icon name="search" style={{ width: 28, height: 28 }} />
+          <b>Aucun terme trouvé</b>
+          <span>Essaie un autre mot, ou seulement le début du mot.</span>
+        </div>
       )}
 
       {filteredCategories.map((category) => {
         const isOpen = isSearching || openCategory === category.id
         return (
-          <div className="cat" key={category.id} style={{ borderLeftColor: CATEGORY_COLORS[category.id] }}>
+          <div className={`cat${isOpen ? ' open' : ''}`} key={category.id} style={{ '--cat': CATEGORY_COLORS[category.id] }}>
             <button
               type="button"
               className="head"
+              aria-expanded={isOpen}
               onClick={() => setOpenCategory(openCategory === category.id ? null : category.id)}
             >
-              <span>{category.nom}</span>
-              <span className="count">
-                {category.entries.length} {isOpen ? '▾' : '▸'}
+              <span className="cat-badge">
+                <Icon name={CATEGORY_ICONS[category.id]} style={{ width: 18, height: 18 }} />
               </span>
+              <span className="cat-name">{category.nom}</span>
+              <span className="count">{category.entries.length}</span>
+              <Icon name="back" className="ico chev" style={{ width: 18, height: 18 }} />
             </button>
-            {isOpen &&
-              category.entries.map(([name, definition]) => (
-                <div
-                  className={`term${target?.key === name ? ' term-highlight' : ''}`}
-                  key={name}
-                  ref={target?.key === name ? highlightRef : undefined}
-                >
-                  <b>{name}</b> — {definition}
-                </div>
-              ))}
+            {isOpen && (
+              <div className="terms">
+                {category.entries.map(([name, definition]) => (
+                  <div
+                    className={`term${target?.key === name ? ' term-highlight' : ''}`}
+                    key={name}
+                    ref={target?.key === name ? highlightRef : undefined}
+                  >
+                    <b>{name}</b>
+                    <span>{definition}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )
       })}

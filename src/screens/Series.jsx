@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '../components/Icons'
+import BackHeader from '../components/BackHeader'
 import JargonText from '../components/JargonText'
 import PositionPicker from '../components/PositionPicker'
 import ProgressBar, { masteryColor } from '../components/ProgressBar'
@@ -81,17 +81,6 @@ function SituationsVisual() {
         </g>
       ))}
     </svg>
-  )
-}
-
-function BackHeader({ title, onBack }) {
-  return (
-    <div className="subnav">
-      <button type="button" className="back-btn" onClick={onBack} aria-label="Retour aux séries">
-        <Icon name="back" style={{ width: 22, height: 22 }} />
-      </button>
-      <b>{title}</b>
-    </div>
   )
 }
 
