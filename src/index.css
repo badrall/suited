@@ -203,12 +203,6 @@ button {
   color: var(--text);
 }
 
-.topbar-chips {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
 .brand {
   display: flex;
   align-items: center;
@@ -232,12 +226,6 @@ button {
 
 .chip.fire {
   color: var(--gold);
-}
-.chip.xp {
-  color: var(--cream-2);
-}
-.chip.iq {
-  color: var(--blue-l);
 }
 
 /* ---------- Navigation basse ---------- */
@@ -373,33 +361,6 @@ button {
   transition: width 0.4s ease;
 }
 
-@keyframes rank-up-pop {
-  0% {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.02);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.rank-up-banner {
-  background: linear-gradient(135deg, #edb55e, var(--gold-d));
-  color: var(--ink);
-  font-weight: 800;
-  font-size: 13px;
-  text-align: center;
-  border-radius: 14px;
-  padding: 10px;
-  margin-bottom: 12px;
-  animation: rank-up-pop 0.4s ease-out;
-}
-
 /* Héros : grande carte crème, pique en filigrane, titre serif. */
 .hero {
   background: linear-gradient(168deg, var(--cream) 0%, var(--cream-2) 100%);
@@ -443,31 +404,113 @@ button {
   position: relative;
 }
 
-.ringwrap {
+/* Héros de l'accueil : occupe la place restante, cartes décoratives, bouton en bas. */
+.hero-home {
+  flex: 1 0 auto;
+  min-height: 330px;
   display: flex;
-  align-items: center;
-  gap: 14px;
+  flex-direction: column;
 }
-.ring {
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
+.hero-home .suits {
+  font-size: 132px;
+  letter-spacing: 0;
+  right: 16px;
+  top: 12px;
+}
+.hero-tag {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-d);
+  letter-spacing: 0.2px;
+  position: relative;
+}
+.hero-home h3 {
+  font-size: 41px;
+  line-height: 0.96;
+  margin: 6px 0 7px;
+}
+.hero-home p {
+  margin-bottom: auto;
+}
+.hero-cards {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  position: relative;
+}
+.pch {
+  width: 30px;
+  height: 42px;
+  border-radius: 7px;
+  background: #fff;
+  border: 1px solid #e4d6bf;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-}
-.ring b {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
   font-weight: 800;
-  color: var(--green-l);
+  font-size: 15px;
+}
+.pch.r {
+  color: var(--red);
+}
+.pch.b {
+  color: #223;
+}
+.hero-home .btn {
+  margin-top: 16px;
+}
+
+/* Mot du jour : encadré serif à gauche, définition à droite (tap = ouvre le terme dans Le Jargon). */
+.word {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 11px;
+}
+.word:active {
+  opacity: 0.8;
+}
+.word-term {
+  flex: 0 0 auto;
+  min-width: 86px;
+  max-width: 45%;
+  background: linear-gradient(160deg, rgba(224, 166, 85, 0.16), rgba(224, 166, 85, 0.05));
+  border: 1px solid rgba(224, 166, 85, 0.22);
+  border-radius: 12px;
+  padding: 9px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1px;
+}
+.word-term b {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 21px;
+  color: var(--text);
+  line-height: 1.05;
+}
+.word-term em {
+  font-family: var(--font-title);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--gold);
+}
+.word-def {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-soft);
+  line-height: 1.35;
 }
 
 .grid {
@@ -1239,36 +1282,6 @@ h5:first-child {
   inset: 0;
   z-index: 40;
   display: block;
-}
-
-/* ---------- Mot du jour ---------- */
-
-.card.word-of-day {
-  background: linear-gradient(160deg, rgba(224, 166, 85, 0.16), rgba(224, 166, 85, 0.05));
-  border: 1px solid rgba(224, 166, 85, 0.24);
-  box-shadow: none;
-}
-.word-of-day b {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--gold);
-  font-size: 11px;
-  letter-spacing: 0.8px;
-}
-.word-of-day-term {
-  font-family: var(--font-title);
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--cream);
-  margin: 4px 0 2px;
-}
-.word-of-day p {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-soft);
-  line-height: 1.4;
-  margin-bottom: 6px;
 }
 
 .link {

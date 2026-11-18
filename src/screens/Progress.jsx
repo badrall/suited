@@ -17,6 +17,7 @@ import {
   daysUntilOnboardingRetake,
 } from '../lib/storage'
 import { estimateLevel } from '../lib/levelEstimator'
+import { getNotificationPermission, requestNotificationPermission, scheduleDailyReminder } from '../lib/notifications'
 import { ALL_HERO_GROUPS, SPOTS, SPOT_LABELS } from '../lib/hands'
 
 export default function Progress({ onRetakeOnboarding }) {
@@ -27,7 +28,14 @@ export default function Progress({ onRetakeOnboarding }) {
   const missed = getTopMissedHands(state.history, 5)
   const { days, monthLabel } = getMonthCalendar(state.streak.playedDates)
   const [copyLabel, setCopyLabel] = useState('COPIER MES STATS')
+  const [notifPermission, setNotifPermission] = useState(getNotificationPermission())
   const canRetake = canRetakeOnboarding(state.onboarding)
+
+  async function handleEnableReminders() {
+    const permission = await requestNotificationPermission()
+    setNotifPermission(permission)
+    if (permission === 'granted') scheduleDailyReminder()
+  }
 
   function handleCopyStats() {
     let pseudo = getPseudo()
@@ -138,6 +146,32 @@ export default function Progress({ onRetakeOnboarding }) {
           </div>
         ))}
       </div>
+
+      {notifPermission !== 'unsupported' && (
+        <>
+          <h5>Rappel quotidien</h5>
+          <div className="card" style={{ marginBottom: 14 }}>
+            {notifPermission === 'default' && (
+              <>
+                <small style={{ fontWeight: 800, color: 'var(--text-muted)' }}>
+                  Reçois un rappel à 19h pour ta session du jour (il ne se déclenche que si Suited reste ouvert).
+                </small>
+                <button type="button" className="btn ghost" style={{ marginTop: 10 }} onClick={handleEnableReminders}>
+                  ACTIVER LE RAPPEL (19H)
+                </button>
+              </>
+            )}
+            {notifPermission === 'granted' && (
+              <small style={{ fontWeight: 800, color: 'var(--green-l)' }}>Rappel quotidien activé (19h).</small>
+            )}
+            {notifPermission === 'denied' && (
+              <small style={{ fontWeight: 800, color: 'var(--text-muted)' }}>
+                Notifications bloquées : autorise-les dans les réglages de ton navigateur pour activer le rappel.
+              </small>
+            )}
+          </div>
+        </>
+      )}
 
       <button type="button" className="btn ghost" onClick={handleCopyStats}>
         {copyLabel}

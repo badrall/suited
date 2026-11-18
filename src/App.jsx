@@ -61,7 +61,7 @@ export default function App() {
         ) : (
           <>
             {tab === 'home' && (
-              <Home key={refreshTick} onPlay={() => startSession({ spot: null, group: null })} onNavigate={setTab} />
+              <Home key={refreshTick} onPlay={() => startSession({ spot: null, group: null })} />
             )}
             {tab === 'series' && <Series key={`s${refreshTick}`} onStart={startSession} />}
             {tab === 'charts' && <Charts />}
