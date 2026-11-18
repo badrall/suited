@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '../components/Icons'
+import Logo from '../components/Logo'
 import MasteryRing from '../components/MasteryRing'
+import StreakWeek from '../components/StreakWeek'
 import ProgressBar from '../components/ProgressBar'
 import { loadState, getOverallMastery, getAllMastery, getPokerIQ, getTrainingRank, acknowledgeRankUp, hasPlayedToday } from '../lib/storage'
 import { ALL_HERO_GROUPS } from '../lib/hands'
@@ -58,19 +60,23 @@ export default function Home({ onPlay, onNavigate }) {
       </div>
 
       <div className="topbar">
-        <div className="chip fire">
-          <Icon name="flame" />
-          {state.streak.count}
+        <div className="brand">
+          <Logo />
+          <div className="wordmark">Suited</div>
         </div>
-        <div className="chip iq">
-          <Icon name="brain" />
-          IQ {iq.score}
-        </div>
-        <div className="chip xp">
-          <Icon name="star" />
-          {state.xp.toLocaleString('fr-FR')}
+        <div className="topbar-chips">
+          <div className="chip iq">
+            <Icon name="brain" />
+            IQ {iq.score}
+          </div>
+          <div className="chip xp">
+            <Icon name="star" />
+            {state.xp.toLocaleString('fr-FR')}
+          </div>
         </div>
       </div>
+
+      <StreakWeek streak={state.streak} />
 
       {showRankUp && <div className="rank-up-banner">Nouveau rang débloqué : {rank.label} !</div>}
 
@@ -86,9 +92,9 @@ export default function Home({ onPlay, onNavigate }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
         <Icon
           name={doneToday ? 'check' : 'target'}
-          style={{ width: 14, height: 14, color: doneToday ? 'var(--green-dark)' : 'var(--gray)' }}
+          style={{ width: 14, height: 14, color: doneToday ? 'var(--green-l)' : 'var(--text-muted)' }}
         />
-        <small style={{ fontWeight: 800, color: doneToday ? 'var(--green-dark)' : 'var(--gray)' }}>
+        <small style={{ fontWeight: 800, color: doneToday ? 'var(--green-l)' : 'var(--text-muted)' }}>
           {doneToday ? 'Objectif du jour atteint' : 'Objectif du jour : à faire'}
         </small>
       </div>
@@ -96,10 +102,10 @@ export default function Home({ onPlay, onNavigate }) {
       <div className="card" style={{ marginBottom: 14 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
           <b style={{ fontSize: 14 }}>Rang d'entraînement</b>
-          <span style={{ fontWeight: 900, fontSize: 13, color: 'var(--orange)' }}>{rank.label}</span>
+          <span style={{ fontWeight: 900, fontSize: 13, color: 'var(--gold)' }}>{rank.label}</span>
         </div>
-        <ProgressBar percent={rank.progress * 100} color="var(--orange)" />
-        <small style={{ fontWeight: 800, color: 'var(--gray)', display: 'block', marginTop: 6 }}>
+        <ProgressBar percent={rank.progress * 100} color="var(--gold)" />
+        <small style={{ fontWeight: 800, color: 'var(--text-muted)', display: 'block', marginTop: 6 }}>
           {rank.next ? `${rank.next.xpRemaining} XP jusqu'à ${rank.next.label}` : 'Rang maximum atteint'}
         </small>
       </div>
@@ -110,7 +116,7 @@ export default function Home({ onPlay, onNavigate }) {
           <div>
             <b style={{ fontSize: 14 }}>Maîtrise préflop</b>
             <br />
-            <small style={{ fontWeight: 800, color: 'var(--gray)' }}>
+            <small style={{ fontWeight: 800, color: 'var(--text-muted)' }}>
               {weakest
                 ? `Point faible : ${weakest.g} (${weakest.v}%) → entraîne cette position`
                 : state.history.length > 0

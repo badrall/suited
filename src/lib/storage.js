@@ -346,6 +346,20 @@ export function getTopMissedHands(history, n = 5) {
     .map(([notation, count]) => ({ notation, count }))
 }
 
+const WEEK_LABELS = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
+
+/** Semaine en cours, du lundi au dimanche, pour le composant StreakWeek. */
+export function getWeekCalendar(playedDates, date = new Date()) {
+  const played = new Set(playedDates)
+  const today = todayStr(date)
+  const mondayOffset = (date.getDay() + 6) % 7 // dimanche=0 → 6, lundi=1 → 0
+  return WEEK_LABELS.map((label, i) => {
+    const d = new Date(date.getFullYear(), date.getMonth(), date.getDate() - mondayOffset + i)
+    const key = todayStr(d)
+    return { label, date: key, played: played.has(key), isToday: key === today }
+  })
+}
+
 /** Grille du mois courant pour le calendrier de streak (Progrès). */
 export function getMonthCalendar(playedDates, date = new Date()) {
   const year = date.getFullYear()

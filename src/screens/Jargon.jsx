@@ -5,10 +5,10 @@ import { CATEGORIES, findTermByCore } from '../lib/jargon'
 const CATEGORY_COLORS = {
   bases: 'var(--green)',
   actions: 'var(--blue)',
-  positions: 'var(--purple)',
-  mains: 'var(--orange)',
-  metajeu: '#FF6DA3',
-  tournois: '#00C2B8',
+  positions: 'var(--violet)',
+  mains: 'var(--gold)',
+  metajeu: 'var(--rose)',
+  tournois: 'var(--teal)',
 }
 
 /** Écran "Le Jargon" : 6 catégories en accordéons + recherche en temps réel (nom et définition). */
@@ -45,7 +45,7 @@ export default function Jargon({ highlightTerm }) {
       </div>
 
       {filteredCategories.length === 0 && (
-        <small style={{ fontWeight: 800, color: 'var(--gray)' }}>Aucun terme ne correspond à ta recherche.</small>
+        <small style={{ fontWeight: 800, color: 'var(--text-muted)' }}>Aucun terme ne correspond à ta recherche.</small>
       )}
 
       {filteredCategories.map((category) => {

@@ -9,8 +9,8 @@ export default function ProgressBar({ percent, color = 'var(--green)', trackStyl
 
 /** Couleur de maîtrise : rouge <50%, orange 50-75%, vert >75%. */
 export function masteryColor(percent) {
-  if (percent == null) return 'var(--line)'
+  if (percent == null) return 'var(--line-strong)'
   if (percent < 50) return 'var(--red)'
-  if (percent < 75) return 'var(--orange)'
+  if (percent < 75) return 'var(--gold)'
   return 'var(--green)'
 }

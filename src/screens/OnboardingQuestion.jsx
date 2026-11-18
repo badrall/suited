@@ -9,7 +9,7 @@ export default function OnboardingQuestion({ question, index, total, onAnswer })
       <div className="progress">
         <span style={{ width: 20 }} />
         <ProgressBar percent={percent} />
-        <b style={{ fontSize: 12, color: 'var(--gray)', fontWeight: 900 }}>
+        <b style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 900 }}>
           {index + 1}/{total}
         </b>
       </div>

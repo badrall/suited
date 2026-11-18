@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { scheduleSrsUpdate, SRS_INTERVALS, getTrainingRank, TRAINING_RANKS } from './storage'
+import { scheduleSrsUpdate, SRS_INTERVALS, getTrainingRank, TRAINING_RANKS, getWeekCalendar } from './storage'
 
 describe('scheduleSrsUpdate (répétition espacée)', () => {
   it('ne suit pas une main jamais ratée quand la réponse est correcte', () => {
@@ -85,5 +85,30 @@ describe('getTrainingRank (rang d\'assiduité basé sur l\'XP)', () => {
       lastIndex = index
     }
     expect(lastIndex).toBe(TRAINING_RANKS.length - 1)
+  })
+})
+
+describe('getWeekCalendar (semaine du composant StreakWeek)', () => {
+  // Mercredi 18 novembre 2026 : la semaine va du lundi 16 au dimanche 22.
+  const wednesday = new Date(2026, 10, 18)
+
+  it("renvoie 7 jours L→D, du lundi au dimanche, aujourd'hui repéré", () => {
+    const week = getWeekCalendar([], wednesday)
+    expect(week.map((d) => d.label)).toEqual(['L', 'M', 'M', 'J', 'V', 'S', 'D'])
+    expect(week[0].date).toBe('2026-11-16')
+    expect(week[6].date).toBe('2026-11-22')
+    expect(week.filter((d) => d.isToday).map((d) => d.date)).toEqual(['2026-11-18'])
+  })
+
+  it("marque les jours joués de la semaine, ignore ceux d'une autre semaine", () => {
+    const week = getWeekCalendar(['2026-11-16', '2026-11-17', '2026-11-09'], wednesday)
+    expect(week.filter((d) => d.played).map((d) => d.date)).toEqual(['2026-11-16', '2026-11-17'])
+  })
+
+  it('un dimanche est le dernier jour de la semaine (pas le premier de la suivante)', () => {
+    const sunday = new Date(2026, 10, 22)
+    const week = getWeekCalendar([], sunday)
+    expect(week[0].date).toBe('2026-11-16')
+    expect(week[6].isToday).toBe(true)
   })
 })

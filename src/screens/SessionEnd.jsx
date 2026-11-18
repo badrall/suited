@@ -95,7 +95,7 @@ export default function SessionEnd({
 
       {masteryGained && (
         <div className="mastery-gain">
-          {masteryGained.label} : {masteryGained.before}% → {masteryGained.after}% 📈
+          {masteryGained.label} : {masteryGained.before}% → {masteryGained.after}%
         </div>
       )}
 
@@ -120,7 +120,7 @@ export default function SessionEnd({
                       {m.notation} · {seatPhrase(m.seat)}
                     </span>
                     <span className="badge">
-                      <Icon name="cross" style={{ width: 12, height: 12, color: 'var(--red)' }} />
+                      <Icon name="cross" style={{ width: 12, height: 12, color: 'var(--red-l)' }} />
                     </span>
                   </div>
                   <p>

@@ -6,9 +6,9 @@ import { SPOT_LABELS } from '../lib/hands'
 const POSITION_GROUPS_UI = ['EP', 'MP', 'CO', 'BTN', 'Blinds']
 
 const SITUATION_TILES = [
-  { key: 'open', color: '#00C2B8', glyph: '↑' },
+  { key: 'open', color: 'var(--teal)', glyph: '↑' },
   { key: 'bb_defense', color: 'var(--blue)', glyph: '◉' },
-  { key: 'vs_3bet', color: 'var(--purple)', glyph: '▲' },
+  { key: 'vs_3bet', color: 'var(--violet)', glyph: '▲' },
 ]
 
 function masteryLabel(percent) {
@@ -33,7 +33,7 @@ export default function Series({ onStart }) {
         type="button"
         className="mode"
         style={{
-          background: 'linear-gradient(135deg,#58CC02,#2FB57C)',
+          background: 'linear-gradient(135deg, #4bb391, var(--green-d))',
           flexDirection: 'row',
           alignItems: 'center',
           gap: 12,

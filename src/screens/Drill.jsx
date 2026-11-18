@@ -19,7 +19,7 @@ export default function Drill({ question, index, total, onAnswer, onQuit }) {
           ✕
         </button>
         <ProgressBar percent={percent} />
-        <b style={{ fontSize: 12, color: 'var(--gray)', fontWeight: 900 }}>
+        <b style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 900 }}>
           {index + 1}/{total}
         </b>
       </div>

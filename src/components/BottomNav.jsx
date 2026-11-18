@@ -1,11 +1,11 @@
 import { Icon } from './Icons'
 
 const TABS = [
-  { key: 'home', label: 'ACCUEIL', icon: 'home' },
-  { key: 'series', label: 'SÉRIES', icon: 'target' },
-  { key: 'charts', label: 'CHARTS', icon: 'cards' },
-  { key: 'jargon', label: 'JARGON', icon: 'book' },
-  { key: 'progress', label: 'PROGRÈS', icon: 'chart' },
+  { key: 'home', label: 'Accueil', icon: 'nav-home' },
+  { key: 'series', label: 'Séries', icon: 'nav-series' },
+  { key: 'charts', label: 'Charts', icon: 'nav-charts' },
+  { key: 'jargon', label: 'Jargon', icon: 'nav-jargon' },
+  { key: 'progress', label: 'Progrès', icon: 'nav-progress' },
 ]
 
 export default function BottomNav({ active, onChange }) {

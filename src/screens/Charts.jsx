@@ -181,7 +181,7 @@ export default function Charts() {
                 {frontierSet.has(selected) && ' · main frontière (priorité du drill)'}
               </>
             ) : (
-              <span style={{ color: 'var(--gray)' }}>Tape une case pour voir la main et l'action.</span>
+              <span style={{ color: 'var(--text-muted)' }}>Tape une case pour voir la main et l'action.</span>
             )}
           </div>
         </>
@@ -217,7 +217,7 @@ export default function Charts() {
               <div style={{ fontSize: 13, fontWeight: 800 }}>
                 {quizNotation} → <span className="good">{ACTION_LABEL[quizAnswer.correctAction]}</span>
                 {!quizAnswer.correct && (
-                  <span style={{ color: 'var(--gray)' }}> (tu as répondu {ACTION_LABEL[quizAnswer.userAction]})</span>
+                  <span style={{ color: 'var(--text-muted)' }}> (tu as répondu {ACTION_LABEL[quizAnswer.userAction]})</span>
                 )}
               </div>
             </div>

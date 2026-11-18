@@ -1,16 +1,16 @@
 import { RANKS } from '../lib/hands'
 
-// Couleurs cohérentes avec le drill : les 3 actions "on continue" en vert, CALL en bleu, FOLD en gris clair.
+// Mêmes couleurs que les boutons du drill : FOLD = rouge, CALL = bleu, RAISE/3-BET/4-BET = vert (action « forte »).
 // "hidden" : case neutre (non colorée) — utilisée par le mode Quiz de Charts avant révélation.
 export const ACTION_COLOR = {
   raise: 'var(--green)',
   '3bet': 'var(--green)',
   '4bet': 'var(--green)',
   call: 'var(--blue)',
-  fold: 'var(--line)',
-  hidden: '#fff',
+  fold: 'var(--red)',
+  hidden: 'rgba(255, 255, 255, 0.07)',
 }
-const ACTION_TEXT_COLOR = { raise: '#fff', '3bet': '#fff', '4bet': '#fff', call: '#fff', fold: '#8a8272', hidden: 'var(--ink)' }
+const ACTION_TEXT_COLOR = { raise: '#fff', '3bet': '#fff', '4bet': '#fff', call: '#fff', fold: '#fff', hidden: 'var(--text-muted)' }
 
 // Convention standard : diagonale = paires ; au-dessus = suitées (ligne haute x colonne basse) ; en dessous = off-suit.
 function notationForCell(rowIndex, colIndex) {

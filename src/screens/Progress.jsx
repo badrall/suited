@@ -66,8 +66,8 @@ export default function Progress({ onRetakeOnboarding }) {
       <div className="card" style={{ marginBottom: 14 }}>
         {state.onboarding.status === 'done' ? (
           <>
-            <small style={{ fontWeight: 800, color: 'var(--gray)' }}>
-              Point de départ (estimation provisoire) : <b style={{ color: 'var(--ink)' }}>{state.onboarding.startingPokerIQ}</b>
+            <small style={{ fontWeight: 800, color: 'var(--text-muted)' }}>
+              Point de départ (estimation provisoire) : <b style={{ color: 'var(--text)' }}>{state.onboarding.startingPokerIQ}</b>
             </small>
             <button
               type="button"
@@ -81,7 +81,7 @@ export default function Progress({ onRetakeOnboarding }) {
           </>
         ) : (
           <>
-            <small style={{ fontWeight: 800, color: 'var(--gray)' }}>
+            <small style={{ fontWeight: 800, color: 'var(--text-muted)' }}>
               Fais le test de positionnement pour connaître ton point de départ.
             </small>
             <button type="button" className="btn ghost" style={{ marginTop: 10 }} onClick={onRetakeOnboarding}>
@@ -127,7 +127,7 @@ export default function Progress({ onRetakeOnboarding }) {
       <h5>Top 5 des mains ratées</h5>
       <div className="card" style={{ marginBottom: 14 }}>
         {missed.length === 0 && (
-          <small style={{ fontWeight: 800, color: 'var(--gray)' }}>
+          <small style={{ fontWeight: 800, color: 'var(--text-muted)' }}>
             Aucune erreur pour l'instant — continue comme ça !
           </small>
         )}

@@ -3,7 +3,6 @@ import ProgressBar from './ProgressBar'
 import { SPOT_LABELS } from '../lib/hands'
 import { PREFLOP_ONLY_CAVEAT } from '../lib/levelEstimator'
 
-const GAUGE_TRACK = { background: 'rgba(255,255,255,.25)' }
 
 /** Carte "Ton niveau réel" (écran Progrès) : remplace l'ancien Poker IQ abstrait. */
 export default function LevelCard({ level, onboardingStartingIQ }) {
@@ -20,7 +19,7 @@ export default function LevelCard({ level, onboardingStartingIQ }) {
           <div className="lvl">Pas encore assez de données</div>
         )}
         <div className="next">Ton niveau réel se débloque dans {level.countdown} réponses.</div>
-        <ProgressBar percent={level.reliabilityPercent} color="#fff" trackStyle={GAUGE_TRACK} />
+        <ProgressBar percent={level.reliabilityPercent} color="var(--gold)" />
         <small className="level-progress-label">Progression vers le déblocage : {level.reliabilityPercent}%</small>
       </div>
     )
@@ -39,7 +38,7 @@ export default function LevelCard({ level, onboardingStartingIQ }) {
 
         {nextTier && (
           <>
-            <ProgressBar percent={subScore} color="#fff" trackStyle={GAUGE_TRACK} />
+            <ProgressBar percent={subScore} color="var(--gold)" />
             <small className="level-progress-label">
               {subScore}% vers « {nextTier.label} »
             </small>
@@ -69,11 +68,11 @@ export default function LevelCard({ level, onboardingStartingIQ }) {
       <div className="card" style={{ marginBottom: 14 }}>
         <div className="level-reliability-row">
           <b style={{ fontSize: 13 }}>Fiabilité de l'estimation</b>
-          <span style={{ fontSize: 11, fontWeight: 900, color: 'var(--gray)' }}>
+          <span style={{ fontSize: 11, fontWeight: 900, color: 'var(--text-muted)' }}>
             {status === 'consolidated' ? 'Consolidée' : 'Provisoire'}
           </span>
         </div>
-        <ProgressBar percent={reliabilityPercent} color={status === 'consolidated' ? 'var(--green)' : 'var(--orange)'} />
+        <ProgressBar percent={reliabilityPercent} color={status === 'consolidated' ? 'var(--green)' : 'var(--gold)'} />
         <small className="level-caveat">{PREFLOP_ONLY_CAVEAT}</small>
       </div>
     </>

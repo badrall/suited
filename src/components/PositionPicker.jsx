@@ -15,9 +15,9 @@ const LEGEND_GROUPS = ['EP', 'MP', 'CO', 'BTN', 'Blinds']
 
 // Pas encore de données : même look que le siège neutre du Drill. Sinon, coloré par la maîtrise.
 function seatStyle(percent) {
-  if (percent == null) return { background: '#fff', borderColor: 'var(--line)', color: '#999' }
+  if (percent == null) return { background: 'var(--cream-2)', borderColor: 'var(--cream)', color: 'var(--ink-muted)' }
   const color = masteryColor(percent)
-  return { background: color, borderColor: color, color: '#fff' }
+  return { background: color, borderColor: color, color: percent >= 50 && percent < 75 ? 'var(--ink)' : '#fff' }
 }
 
 /**

@@ -30,9 +30,9 @@ export default function Feedback({
   return (
     <div className="screen">
       <div className="progress">
-        <span style={{ color: 'var(--gray)', fontWeight: 900 }}>✕</span>
+        <span style={{ color: 'var(--text-muted)', fontWeight: 900 }}>✕</span>
         <ProgressBar percent={((index + 1) / total) * 100} />
-        <b style={{ fontSize: 12, color: 'var(--gray)', fontWeight: 900 }}>
+        <b style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 900 }}>
           {index + 1}/{total}
         </b>
       </div>
@@ -51,7 +51,7 @@ export default function Feedback({
         <div style={{ fontSize: 13, fontWeight: 800 }}>
           La bonne action : <span className="good">{ACTION_LABELS[correctAction]} ✓</span>{' '}
           {!correct && (
-            <span style={{ color: 'var(--gray)' }}>(tu as répondu {ACTION_LABELS[userAction]})</span>
+            <span style={{ color: 'var(--text-muted)' }}>(tu as répondu {ACTION_LABELS[userAction]})</span>
           )}
         </div>
         {isLimpTrap && (
@@ -79,7 +79,7 @@ export default function Feedback({
               <span>
                 {twin.notation} ({notation.endsWith('s') ? 'non suité' : 'suité'})
               </span>
-              <ProgressBar percent={twin.equity} color="#b8c4ce" />
+              <ProgressBar percent={twin.equity} color="var(--text-muted)" />
               <b>{twin.equity}%</b>
             </div>
           )}

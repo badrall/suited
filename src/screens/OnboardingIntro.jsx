@@ -1,6 +1,12 @@
+import Logo from '../components/Logo'
+
 export default function OnboardingIntro({ onStart, onSkip }) {
   return (
     <div className="screen onboarding-intro">
+      <div className="brand">
+        <Logo size={44} />
+        <div className="wordmark">Suited</div>
+      </div>
       <div className="hero">
         <div className="suits">♠♥</div>
         <h3>Fais le point en 5 min</h3>
