@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import Logo from '../components/Logo'
 import StreakWeek from '../components/StreakWeek'
 import { loadState } from '../lib/storage'
+import { freeSessionsLeft } from '../lib/premium'
 import { scheduleDailyReminder } from '../lib/notifications'
 import { pickTermOfDay } from '../lib/jargon'
 import { useJargonNavigate } from '../lib/JargonNavigation'
@@ -39,7 +40,13 @@ export default function Home({ onPlay }) {
           <br />
           du jour
         </h3>
-        <p>10 mains · 3 min</p>
+        <p>
+          10 mains · 3 min
+          {/* Cap gratuit atteint : le tap sur JOUER ouvrira le paywall (gate dans App.startSession). */}
+          {freeSessionsLeft(state) === 0 && (
+            <span className="hero-note">Session du jour faite, reviens demain ou passe en illimité</span>
+          )}
+        </p>
         <div className="hero-cards">
           <span className="pch b">A♠</span>
           <span className="pch r">K♦</span>

@@ -153,6 +153,12 @@ export function getSessionsThisWeek(sessionLog) {
   return sessionLog.filter((ts) => ts >= start).length
 }
 
+/** Sessions terminées aujourd'hui (date locale) : base du cap de sessions gratuites (premium.js). */
+export function getSessionsToday(sessionLog) {
+  const today = todayStr()
+  return sessionLog.filter((ts) => todayStr(new Date(ts)) === today).length
+}
+
 export function getPseudo() {
   return loadState().pseudo
 }

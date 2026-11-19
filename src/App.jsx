@@ -9,18 +9,31 @@ import Progress from './screens/Progress'
 import Session from './screens/Session'
 import Onboarding from './screens/Onboarding'
 import { JargonNavigationProvider } from './lib/JargonNavigation'
+import Paywall from './components/Paywall'
 import { loadState } from './lib/storage'
+import { isPremium, isSpotPremium, canStartSession } from './lib/premium'
 
 // L'app est une simple machine à onglets + deux modes plein écran hors ruban : session et onboarding.
 export default function App() {
   const [tab, setTab] = useState('home')
   const [sessionConfig, setSessionConfig] = useState(null) // null hors session, sinon { spot, group }
   const [refreshTick, setRefreshTick] = useState(0)
+  const [paywall, setPaywall] = useState(null) // null | { reason }
   const [jargonTermCore, setJargonTermCore] = useState(null)
   // Premier lancement (aucun état sauvegardé) : le test de positionnement s'affiche automatiquement.
   const [onboardingActive, setOnboardingActive] = useState(() => loadState().onboarding.status === 'pending')
 
+  // Point d'entrée unique des sessions : c'est ici que le gate premium s'applique (spot verrouillé, cap du jour).
   function startSession(config) {
+    const state = loadState()
+    if (config.spot && isSpotPremium(config.spot) && !isPremium()) {
+      setPaywall({ reason: 'premium-spot' })
+      return
+    }
+    if (!canStartSession(state)) {
+      setPaywall({ reason: 'daily-limit' })
+      return
+    }
     setSessionConfig(config)
   }
 
@@ -38,7 +51,8 @@ export default function App() {
   function endOnboarding(startSessionAfter) {
     setOnboardingActive(false)
     setRefreshTick((t) => t + 1) // le Poker IQ de repli / les stats viennent de changer
-    if (startSessionAfter) startSession({ spot: null, group: null })
+    // Premier entraînement après le test : on contourne volontairement le gate (jamais bloqué ici).
+    if (startSessionAfter) setSessionConfig({ spot: null, group: null })
     else setTab('home')
   }
 
@@ -73,6 +87,7 @@ export default function App() {
           </>
         )}
       </JargonNavigationProvider>
+      {paywall && <Paywall reason={paywall.reason} onClose={() => setPaywall(null)} />}
     </div>
   )
 }

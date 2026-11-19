@@ -5,6 +5,17 @@ import PositionPicker from '../components/PositionPicker'
 import ProgressBar, { masteryColor } from '../components/ProgressBar'
 import { loadState, getMasteryForPositionFilter, getMasteryBySpot } from '../lib/storage'
 import { SPOTS, SPOT_LABELS } from '../lib/hands'
+import { isPremium, isSpotPremium } from '../lib/premium'
+import { Icon } from '../components/Icons'
+
+function LockBadge() {
+  return (
+    <span className="lock-badge">
+      <Icon name="lock" />
+      Premium
+    </span>
+  )
+}
 
 const POSITION_GROUPS_UI = ['EP', 'MP', 'CO', 'BTN', 'Blinds']
 
@@ -92,6 +103,7 @@ function SituationsVisual() {
 export default function Series({ onStart }) {
   const [view, setView] = useState('root') // 'root' | 'positions' | 'situations'
   const state = loadState()
+  const premium = isPremium()
   const masteryByGroup = Object.fromEntries(
     POSITION_GROUPS_UI.map((g) => [g, getMasteryForPositionFilter(state.history, g)]),
   )
@@ -125,6 +137,8 @@ export default function Series({ onStart }) {
             <button key={spot} type="button" className="situation-row" onClick={() => onStart({ spot, group: null })}>
               <span className="situation-title">
                 <JargonText text={SPOT_LABELS[spot]} />
+                {/* Le tap reste actif : le gate de App.startSession ouvre le paywall. */}
+                {isSpotPremium(spot) && !premium && <LockBadge />}
               </span>
               <span className="situation-desc">{SPOT_DESCRIPTIONS[spot]}</span>
               <span className="situation-mastery">

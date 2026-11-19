@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Icon } from '../components/Icons'
 import BackHeader from '../components/BackHeader'
 import ProgressBar from '../components/ProgressBar'
+import Paywall from '../components/Paywall'
+import { isPremium } from '../lib/premium'
 import RangeMatrix, { ACTION_COLOR } from '../components/RangeMatrix'
 import rangesOpenData from '../data/ranges-open-raise-9max-live.json'
 import rangesDefenseData from '../data/ranges-defense-bb-et-vs-3bet.json'
@@ -96,6 +98,8 @@ export default function Charts() {
   const [spot, setSpot] = useState('open')
   const [contextKey, setContextKey] = useState(CONTEXTS_BY_SPOT.open[0].key)
   const [selected, setSelected] = useState(null)
+  const [showPaywall, setShowPaywall] = useState(false)
+  const premium = isPremium()
 
   const [quizQueue, setQuizQueue] = useState([])
   const [quizIndex, setQuizIndex] = useState(0)
@@ -112,6 +116,11 @@ export default function Charts() {
   }
 
   function enterMode(nextMode) {
+    // « Teste-toi » est premium ; « Les grilles » reste 100 % gratuit.
+    if (nextMode === 'quiz' && !premium) {
+      setShowPaywall(true)
+      return
+    }
     setMode(nextMode)
     setSelected(null)
     if (nextMode === 'quiz') startQuiz()
@@ -177,11 +186,21 @@ export default function Charts() {
 
         <button type="button" className="series-box" onClick={() => enterMode('quiz')}>
           <span className="sb-text">
-            <span className="sb-title">Teste-toi</span>
+            <span className="sb-title">
+              Teste-toi
+              {!premium && (
+                <span className="lock-badge">
+                  <Icon name="lock" />
+                  Premium
+                </span>
+              )}
+            </span>
             <span className="sb-sub">15 mains surlignées au hasard : tu choisis l'action, la matrice te corrige.</span>
           </span>
           <QuizVisual />
         </button>
+
+        {showPaywall && <Paywall reason="premium-feature" onClose={() => setShowPaywall(false)} />}
       </div>
     )
   }

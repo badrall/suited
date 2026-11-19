@@ -16,6 +16,7 @@ import {
   canRetakeOnboarding,
   daysUntilOnboardingRetake,
 } from '../lib/storage'
+import { isPremium, setPremium } from '../lib/premium'
 import { estimateLevel } from '../lib/levelEstimator'
 import { getNotificationPermission, requestNotificationPermission, scheduleDailyReminder } from '../lib/notifications'
 import { ALL_HERO_GROUPS, SPOTS, SPOT_LABELS } from '../lib/hands'
@@ -30,6 +31,7 @@ export default function Progress({ onRetakeOnboarding }) {
   const [copyLabel, setCopyLabel] = useState('COPIER MES STATS')
   const [notifPermission, setNotifPermission] = useState(getNotificationPermission())
   const canRetake = canRetakeOnboarding(state.onboarding)
+  const [, setDevTick] = useState(0)
 
   async function handleEnableReminders() {
     const permission = await requestNotificationPermission()
@@ -176,6 +178,20 @@ export default function Progress({ onRetakeOnboarding }) {
       <button type="button" className="btn ghost" onClick={handleCopyStats}>
         {copyLabel}
       </button>
+
+      {/* Toggle de test du socle premium : jamais inclus dans le build de production. */}
+      {import.meta.env.DEV && (
+        <button
+          type="button"
+          className="dev-toggle"
+          onClick={() => {
+            setPremium(!isPremium())
+            setDevTick((t) => t + 1) // re-render pour relire le flag
+          }}
+        >
+          DEV : premium {isPremium() ? 'ON' : 'OFF'}
+        </button>
+      )}
     </div>
   )
 }

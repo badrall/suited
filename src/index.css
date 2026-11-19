@@ -1733,3 +1733,144 @@ h5:first-child {
   border-color: var(--gold);
   background: rgba(224, 166, 85, 0.12);
 }
+
+/* ---------- Premium : paywall, cadenas, note d'accueil, toggle DEV ---------- */
+
+.paywall-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(8, 15, 26, 0.78);
+  overflow-y: auto;
+}
+.paywall-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 22px 18px 18px;
+}
+.paywall-title {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.1;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+}
+.paywall-sub {
+  margin: 8px 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink-muted);
+}
+.paywall-offers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.paywall-offer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'label price'
+    'period price';
+  align-items: center;
+  column-gap: 12px;
+  min-height: 64px;
+  padding: 12px 14px;
+  text-align: left;
+  color: var(--ink);
+  background: var(--cream);
+  border: 2px solid var(--gold);
+  border-radius: var(--r-btn);
+}
+.paywall-offer:active {
+  transform: translateY(2px);
+  background: var(--cream-2);
+}
+.po-label {
+  grid-area: label;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+}
+.po-note {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--gold-l);
+}
+.po-price {
+  grid-area: price;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--ink);
+}
+.po-period {
+  grid-area: period;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+.paywall-notice {
+  min-height: 20px;
+  margin: 12px 0 6px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+
+/* Petit cadenas doré (badge « premium ») sur une ligne ou une box verrouillée. */
+.lock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  color: var(--gold);
+}
+.lock-badge .ico {
+  width: 14px;
+  height: 14px;
+  vertical-align: 0;
+}
+.series-box .lock-badge,
+.situation-title .lock-badge {
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* Hero crème de l'accueil : le texte « sur crème » passe par --ink-muted. */
+.hero-note {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ink-muted);
+  position: relative;
+}
+
+.dev-toggle {
+  margin-top: 14px;
+  padding: 8px;
+  background: none;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
