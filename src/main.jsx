@@ -3,6 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { Capacitor } from '@capacitor/core'
 import './index.css'
 import App from './App.jsx'
+import { applyPremiumUrlOverride } from './lib/premium'
+
+// Override de test du flag premium via ?premium=on|off (une seule fois, avant le rendu).
+applyPremiumUrlOverride()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

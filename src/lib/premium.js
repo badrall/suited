@@ -34,6 +34,23 @@ export function setPremium(value) {
   }
 }
 
+/**
+ * Override de test par URL (réservé à nous, aucun lien dans l'UI) : ?premium=on / ?premium=off
+ * règle le flag, puis le paramètre est retiré de l'URL. À appeler une fois au démarrage (main.jsx).
+ */
+export function applyPremiumUrlOverride() {
+  try {
+    const url = new URL(window.location.href)
+    const value = url.searchParams.get('premium')
+    if (value !== 'on' && value !== 'off') return
+    setPremium(value === 'on')
+    url.searchParams.delete('premium')
+    window.history.replaceState(null, '', url.pathname + url.search + url.hash)
+  } catch {
+    // URL ou history indisponible : on ignore, l'app démarre normalement
+  }
+}
+
 /** Le cap se base sur les sessions TERMINÉES aujourd'hui (state.sessionLog). */
 export function canStartSession(state) {
   return isPremium() || getSessionsToday(state.sessionLog) < FREE_SESSIONS_PER_DAY
