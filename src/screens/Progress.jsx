@@ -48,7 +48,7 @@ export default function Progress({ onRetakeOnboarding }) {
     const rank = getTrainingRank(state.xp)
     const overallMastery = getOverallMastery(state.history) ?? 0
     const sessionsThisWeek = getSessionsThisWeek(state.sessionLog)
-    const text = `🃏 ${pseudo} — Streak ${state.streak.count} 🔥 | Rang ${rank.label} | Maîtrise ${overallMastery}% | ${sessionsThisWeek} sessions cette semaine`
+    const text = `🃏 ${pseudo} : Streak ${state.streak.count} 🔥 | Rang ${rank.label} | Maîtrise ${overallMastery}% | ${sessionsThisWeek} sessions cette semaine`
     navigator.clipboard.writeText(text)
     setCopyLabel('COPIÉ !')
     setTimeout(() => setCopyLabel('COPIER MES STATS'), 2000)
@@ -105,7 +105,7 @@ export default function Progress({ onRetakeOnboarding }) {
           <div className="pos" key={group}>
             <span>{group}</span>
             <ProgressBar percent={mastery[group] ?? 0} color={masteryColor(mastery[group])} />
-            <b>{mastery[group] == null ? '—' : `${mastery[group]}%`}</b>
+            <b>{mastery[group] == null ? '-' : `${mastery[group]}%`}</b>
           </div>
         ))}
       </div>
@@ -116,7 +116,7 @@ export default function Progress({ onRetakeOnboarding }) {
           <div className="pos" key={spot}>
             <span style={{ width: 90 }}>{SPOT_LABELS[spot]}</span>
             <ProgressBar percent={masteryBySpot[spot] ?? 0} color={masteryColor(masteryBySpot[spot])} />
-            <b>{masteryBySpot[spot] == null ? '—' : `${masteryBySpot[spot]}%`}</b>
+            <b>{masteryBySpot[spot] == null ? '-' : `${masteryBySpot[spot]}%`}</b>
           </div>
         ))}
       </div>
@@ -136,7 +136,7 @@ export default function Progress({ onRetakeOnboarding }) {
       <div className="card" style={{ marginBottom: 14 }}>
         {missed.length === 0 && (
           <small style={{ fontWeight: 800, color: 'var(--text-muted)' }}>
-            Aucune erreur pour l'instant — continue comme ça !
+            Aucune erreur pour l'instant, continue comme ça !
           </small>
         )}
         {missed.map(({ notation, count }) => (

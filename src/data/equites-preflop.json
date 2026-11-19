@@ -1,7 +1,7 @@
 {
   "meta": {
     "description": "Équité préflop vs 1 main aléatoire (all-in preflop), en %. Couvre les mains frontières + leurs jumelles (suité/off-suit) pour la comparaison 'LA STAT' du feedback.",
-    "source": "Tables d'équité standard publiées — valeurs arrondies, tolérance ±1 pt.",
+    "source": "Tables d'équité standard publiées, valeurs arrondies, tolérance ±1 pt.",
     "warning": "DOUBLE-CHECK REQUIS avant prod : re-calculer par script Monte Carlo (le sandbox était indisponible le 04/07). Toute valeur corrigée doit rester cohérente avec les comparaisons affichées.",
     "usage": "L'app affiche : équité de la main + comparaison avec sa jumelle (ex. A9s 63% vs A9o 61%) pour montrer la valeur du suité."
   },

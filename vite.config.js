@@ -10,7 +10,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.png'],
       manifest: {
-        name: 'Suited — Entraîneur de poker préflop',
+        name: 'Suited : Entraîneur de poker préflop',
         short_name: 'Suited',
         description: "Entraîneur de poker préflop façon Duolingo, en français.",
         theme_color: '#0f2033',

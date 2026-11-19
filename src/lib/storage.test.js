@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { scheduleSrsUpdate, SRS_INTERVALS, getTrainingRank, TRAINING_RANKS, getWeekCalendar } from './storage'
+import { scheduleSrsUpdate, SRS_INTERVALS, getTrainingRank, TRAINING_RANKS, getWeekCalendar, getSeenTerms, markTermSeen } from './storage'
 
 describe('scheduleSrsUpdate (répétition espacée)', () => {
   it('ne suit pas une main jamais ratée quand la réponse est correcte', () => {
@@ -110,5 +110,23 @@ describe('getWeekCalendar (semaine du composant StreakWeek)', () => {
     const week = getWeekCalendar([], sunday)
     expect(week[0].date).toBe('2026-11-16')
     expect(week[6].isToday).toBe(true)
+  })
+})
+
+describe('termes de jargon vus', () => {
+  it('mémorise un terme une seule fois et le retrouve', () => {
+    const store = {}
+    globalThis.localStorage = {
+      getItem: (k) => store[k] ?? null,
+      setItem: (k, v) => {
+        store[k] = v
+      },
+    }
+    expect(getSeenTerms().size).toBe(0)
+    markTermSeen('Range')
+    markTermSeen('Range')
+    markTermSeen('Fold')
+    expect([...getSeenTerms()].sort()).toEqual(['Fold', 'Range'])
+    delete globalThis.localStorage
   })
 })

@@ -11,7 +11,6 @@ import {
   POSITION_GROUPS,
   VS3BET_BUCKET,
   correctActionFor,
-  getFrontierSet,
   candidatePool,
   buttonsForSpot,
 } from '../lib/hands'
@@ -170,15 +169,15 @@ export default function Charts() {
 
         <button type="button" className="series-box" onClick={() => enterMode('consult')}>
           <span className="sb-text">
-            <span className="sb-title">Consultation</span>
-            <span className="sb-sub">Explore la matrice des 169 mains : ouvrir, défendre, répondre à un 3-bet. Tape une main pour voir l'action.</span>
+            <span className="sb-title">Les grilles</span>
+            <span className="sb-sub">Explore la matrice des 169 mains : ouvrir, défendre, répondre à un 3-bet.</span>
           </span>
           <ConsultVisual />
         </button>
 
         <button type="button" className="series-box" onClick={() => enterMode('quiz')}>
           <span className="sb-text">
-            <span className="sb-title">Quiz</span>
+            <span className="sb-title">Teste-toi</span>
             <span className="sb-sub">15 mains surlignées au hasard : tu choisis l'action, la matrice te corrige.</span>
           </span>
           <QuizVisual />
@@ -187,17 +186,11 @@ export default function Charts() {
     )
   }
 
-  const frontierSet = getFrontierSet(spot, contextKey, rangesOpenData, rangesDefenseData)
-  const vpip = spot === 'open' ? rangesOpenData.positions[contextKey].vpip_approx : null
   const buttons = buttonsForSpot(spot)
 
   return (
     <div className="screen with-nav">
-      <BackHeader
-        title={mode === 'consult' ? 'Consultation' : 'Quiz'}
-        onBack={() => setMode(null)}
-        right={mode === 'consult' && vpip ? <span className="chart-vpip subnav-right">VPIP ~{vpip}</span> : null}
-      />
+      <BackHeader title={mode === 'consult' ? 'Les grilles' : 'Teste-toi'} onBack={() => setMode(null)} />
 
       <div className="chart-tabs">
         {SPOTS.map((s) => (
@@ -229,7 +222,7 @@ export default function Charts() {
         <>
           <RangeMatrix
             getAction={getAction}
-            frontierSet={frontierSet}
+            frontierSet={EMPTY_SET}
             selected={selected}
             onCellTap={(notation) => setSelected(notation)}
           />
@@ -241,24 +234,6 @@ export default function Charts() {
                 {ACTION_LABEL[action]}
               </div>
             ))}
-            <div className="chart-legend-item">
-              <span className="chart-legend-swatch chart-legend-frontier" />
-              Main frontière
-            </div>
-          </div>
-
-          <div className="chart-selection">
-            {selected ? (
-              <>
-                <b>{selected}</b>
-                <span className="sel-action" style={{ background: ACTION_COLOR[getAction(selected)] }}>
-                  {ACTION_LABEL[getAction(selected)]}
-                </span>
-                {frontierSet.has(selected) && <small>main frontière (priorité du drill)</small>}
-              </>
-            ) : (
-              <span style={{ color: 'var(--text-muted)' }}>Tape une case pour voir la main et l'action.</span>
-            )}
           </div>
         </>
       ) : quizDone ? (

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { ALL_NOTATIONS, weightFor, weightedChoice } from './hands'
+import { ALL_NOTATIONS, weightFor, weightedChoice, FRONTIER_WEIGHT_MIX } from './hands'
 
 describe('ALL_NOTATIONS', () => {
   it('couvre exactement les 169 combos canoniques (13 paires + 78 suitées + 78 offsuit)', () => {
@@ -9,9 +9,9 @@ describe('ALL_NOTATIONS', () => {
 })
 
 describe('weightFor (tirage pondéré)', () => {
-  it('donne un poids de 3 à une main frontière', () => {
+  it('donne le poids frontière du mix (FRONTIER_WEIGHT_MIX) à une main frontière', () => {
     const frontier = new Set(['A9s', 'KJs'])
-    expect(weightFor('A9s', frontier)).toBe(3)
+    expect(weightFor('A9s', frontier)).toBe(FRONTIER_WEIGHT_MIX)
   })
 
   it('donne un poids réduit à une main triviale (AA, KK, junk off-suit)', () => {
@@ -28,9 +28,9 @@ describe('weightFor (tirage pondéré)', () => {
 
   it('priorise toujours la frontière même si la main est par ailleurs triviale', () => {
     // AA ne peut pas être une main frontière dans ce jeu de données, mais on vérifie la priorité
-    // de branchement : si une main est dans le set frontière, elle garde le poids 3.
+    // de branchement : si une main est dans le set frontière, elle garde le poids frontière.
     const frontier = new Set(['AA'])
-    expect(weightFor('AA', frontier)).toBe(3)
+    expect(weightFor('AA', frontier)).toBe(FRONTIER_WEIGHT_MIX)
   })
 })
 
@@ -43,8 +43,8 @@ describe('weightedChoice (distribution statistique)', () => {
       const pick = weightedChoice(['A9s', '72o', '87s'], (n) => weightFor(n, frontier))
       counts[pick] += 1
     }
-    // Poids relatifs : A9s=3, 87s=1, 72o=0.25 → ratios attendus ~3x et ~4x, on vérifie large pour éviter le flake.
-    expect(counts.A9s).toBeGreaterThan(counts['87s'] * 2)
+    // Poids relatifs (cf. FRONTIER_WEIGHT_MIX / TRIVIAL_WEIGHT_MIX) : A9s ≈ 2.2x une main normale, 72o < 1x ; on vérifie large pour éviter le flake.
+    expect(counts.A9s).toBeGreaterThan(counts['87s'] * 1.6)
     expect(counts['72o']).toBeLessThan(counts['87s'])
   })
 

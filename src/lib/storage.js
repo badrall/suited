@@ -30,6 +30,7 @@ function defaultState() {
     pseudo: null,
     sessionLog: [],
     lastTestQuestionIds: [],
+    seenTerms: [],
     onboarding: { status: 'pending', completedAt: null, themeScores: null, totalScore: null, startingPokerIQ: null },
   }
 }
@@ -187,6 +188,21 @@ export function skipOnboarding() {
 export function recordOnboardingResult({ themeScores, totalScore, startingPokerIQ }) {
   const state = loadState()
   state.onboarding = { status: 'done', completedAt: Date.now(), themeScores, totalScore, startingPokerIQ }
+  saveState(state)
+}
+
+// --- Termes de jargon déjà vus ------------------------------------------------------
+// Un terme tappé (tooltip ouvert) n'est plus souligné ensuite dans les textes ; il reste dans Le Jargon.
+
+export function getSeenTerms() {
+  return new Set(loadState().seenTerms ?? [])
+}
+
+export function markTermSeen(core) {
+  const state = loadState()
+  const seen = state.seenTerms ?? []
+  if (seen.includes(core)) return
+  state.seenTerms = [...seen, core]
   saveState(state)
 }
 

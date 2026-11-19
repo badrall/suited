@@ -39,7 +39,7 @@ export default function PositionPicker({ masteryByGroup, onSelect }) {
               className="seat pos-seat"
               style={{ left, top, ...seatStyle(percent) }}
               onClick={() => onSelect(group)}
-              aria-label={`Focus ${group} — ${percent == null ? 'pas encore joué' : `${percent}% de maîtrise`}`}
+              aria-label={`Focus ${group} : ${percent == null ? 'pas encore joué' : `${percent}% de maîtrise`}`}
             >
               {seat}
             </button>
@@ -54,7 +54,7 @@ export default function PositionPicker({ masteryByGroup, onSelect }) {
             <div className="pos" key={group}>
               <span style={{ width: 50 }}>{group}</span>
               <ProgressBar percent={percent ?? 0} color={masteryColor(percent)} />
-              <b>{percent == null ? '—' : `${percent}%`}</b>
+              <b>{percent == null ? '-' : `${percent}%`}</b>
             </div>
           )
         })}

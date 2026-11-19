@@ -6,8 +6,8 @@
 // nul), on concentre bien plus le tirage sur les mains frontières et on raréfie encore plus les mains
 // triviales, pour éviter le sentiment "trop facile, fold" qu'un focus dilué dans les 169 mains donnait.
 // Le "Mix du jour" (aucun filtre) garde les poids d'origine, inchangés.
-export const FRONTIER_WEIGHT_MIX = 3 // poids d'une main frontière en mix (comportement d'origine)
-export const TRIVIAL_WEIGHT_MIX = 0.25 // poids d'une main triviale en mix (comportement d'origine)
+export const FRONTIER_WEIGHT_MIX = 2.2 // poids d'une main frontière en mix (abaissé de 3 → ~75/25 : un peu plus de mains faciles pour la satisfaction, cf. recette 19/11)
+export const TRIVIAL_WEIGHT_MIX = 0.45 // poids d'une main triviale en mix (relevé de 0.25 : quelques mains "évidentes" gratifiantes)
 export const FRONTIER_BOOST_FOCUS = 2.0 // multiplie le poids frontière en focus (3 × 2 = 6)
 export const TRIVIAL_WEIGHT_FOCUS = 0.1 // remplace (ne multiplie pas) le poids trivial en focus
 
@@ -107,10 +107,21 @@ export function pickSeatForGroup(group) {
   return seats[Math.floor(Math.random() * seats.length)]
 }
 
-/** Choisit un siège au hasard parmi les 9, en excluant un siège donné (utilisé pour le 3-betteur adverse). */
+/** Choisit un siège au hasard parmi les 9, en excluant un siège donné. */
 export function pickRandomOtherSeat(excludeSeat) {
   const options = SEATS_ORDER.filter((s) => s !== excludeSeat)
   return options[Math.floor(Math.random() * options.length)]
+}
+
+/**
+ * Choisit un siège qui parle APRÈS le siège donné (pour le 3-betteur face à notre open) :
+ * un joueur qui s'est déjà couché avant notre open ne peut pas nous 3-better. Ex : si on ouvre
+ * en SB, seul BB peut 3-better ; si on ouvre au CO, ce sera BTN, SB ou BB.
+ */
+export function pickSeatAfter(seat) {
+  const i = SEATS_ORDER.indexOf(seat)
+  const options = SEATS_ORDER.slice(i + 1)
+  return options.length ? options[Math.floor(Math.random() * options.length)] : pickRandomOtherSeat(seat)
 }
 
 export function seatLabel(seat) {
@@ -288,13 +299,13 @@ export function buttonsForSpot(spot) {
 /** Texte du sizing conseillé (encart doré), ou null si le spot/l'action ne s'y prête pas. */
 export function sizingNote(spot, correctAction) {
   if (spot === 'open' && correctAction === 'raise') {
-    return 'En live, ouvre à 4bb (20 € à 2/5) — les petits sizings ne font folder personne.'
+    return 'En live, ouvre à 4bb (20 € à 2/5) : les petits sizings ne font folder personne.'
   }
   if (spot === 'bb_defense' && correctAction === '3bet') {
     return "En live, 3-bette à environ 3x l'open (12bb face à un open à 4bb) : assez gros pour retirer la cote aux mains marginales."
   }
   if (spot === 'vs_3bet' && correctAction === '4bet') {
-    return 'En live, 4-bette à 2,2-2,5x le 3-bet adverse — assez gros pour ne laisser aucune cote de suite.'
+    return 'En live, 4-bette à 2,2-2,5x le 3-bet adverse, assez gros pour ne laisser aucune cote de suite.'
   }
   return null
 }
@@ -369,7 +380,7 @@ function assembleQuestion(spot, group, contextKey, notation, rangesOpenData, ran
     return { spot, group, contextKey, seat: 'BB', openerSeat, notation, cards, correctAction }
   }
   const seat = pickSeatForGroup(group)
-  const villainSeat = pickRandomOtherSeat(seat)
+  const villainSeat = pickSeatAfter(seat)
   return { spot, group, contextKey, seat, villainSeat, notation, cards, correctAction }
 }
 

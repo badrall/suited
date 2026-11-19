@@ -54,7 +54,7 @@ export function drawTestQuestions({ questions = ONBOARDING_BANK, blueprint = BLU
 
 export const THEME_ORIENTATION = {
   A: "Travaille les ranges d'ouverture et de défense position par position : c'est la base de tout le reste.",
-  B: 'Muscle ta lecture de la position — elle dicte à elle seule combien de mains tu peux jouer.',
+  B: 'Muscle ta lecture de la position : elle dicte à elle seule combien de mains tu peux jouer.',
   C: 'Reprends les bases de calcul (équités, cotes, outs) : elles évitent les erreurs les plus coûteuses.',
   D: "Le Jargon (onglet dédié) t'aidera à assimiler le vocabulaire au fil des drills.",
   E: "Les tables live ont leurs propres codes (sizings, joueurs passifs) : les spots dédiés t'y prépareront.",

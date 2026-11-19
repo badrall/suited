@@ -78,7 +78,7 @@ export default function SessionEnd({
             <span>XP gagné</span>
           </div>
           <div>
-            <b>{todayAccuracy == null ? '—' : `${todayAccuracy}%`}</b>
+            <b>{todayAccuracy == null ? '-' : `${todayAccuracy}%`}</b>
             <span>Précision du jour</span>
           </div>
           <div>

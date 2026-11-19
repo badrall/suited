@@ -19,7 +19,7 @@ export default function OnboardingResult({ totalScore, themeScores, startingPoke
       <div className="iqcard">
         <div className="label">POKER IQ · ESTIMATION PROVISOIRE</div>
         <div className="score">{startingPokerIQ}</div>
-        <div className="next">Se précisera au fil de tes sessions — ce n'est qu'un point de départ.</div>
+        <div className="next">Se précisera au fil de tes sessions : ce n'est qu'un point de départ.</div>
       </div>
 
       <h5>Score par thème</h5>

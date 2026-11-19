@@ -17,7 +17,7 @@ export const FRONTIER_ACCURACY_WEIGHT = 2 // poids d'une réponse sur main front
 export const WEAK_LINK_TOLERANCE = 6 // points de tolérance avant qu'un spot faible plafonne le palier
 
 export const PREFLOP_ONLY_CAVEAT =
-  'Cet estimateur mesure ta solidité préflop. Le poker gagnant, c\'est aussi le postflop, la lecture et la gestion — non mesurés ici. Un préflop solide est la fondation, pas le toit.'
+  'Cet estimateur mesure ta solidité préflop. Le poker gagnant, c\'est aussi le postflop, la lecture et la gestion, non mesurés ici. Un préflop solide est la fondation, pas le toit.'
 
 // Les 5 paliers (textes repris de la page Notion 2.8, v0.2 pour les ancrages réels).
 export const TIERS = [
@@ -59,7 +59,7 @@ export const TIERS = [
     min: 90,
     meaning: 'Rigueur préflop irréprochable et constante.',
     realWorld: 'Grands tournois internationaux, calibre WSOP Main Event (~10 000 $).',
-    unlocks: 'Rappel : le postflop reste un chantier distinct — c\'est lui qui fera la différence à ce niveau.',
+    unlocks: 'Rappel : le postflop reste un chantier distinct. C\'est lui qui fera la différence à ce niveau.',
   },
 ]
 
